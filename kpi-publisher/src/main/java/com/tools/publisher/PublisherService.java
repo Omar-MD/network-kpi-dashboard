@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootApplication
 @EnableScheduling
 public class PublisherService {
+
     public static void main(String[] args) {
         SpringApplication.run(PublisherService.class, args);
         log.info("KPI Publisher Running...");
@@ -21,7 +22,7 @@ public class PublisherService {
     @Bean
     public NewTopic topic() {
         return TopicBuilder.name("node-kpi-data")
-                .partitions(10)
+                .partitions(3)
                 .replicas(1)
                 .build();
     }

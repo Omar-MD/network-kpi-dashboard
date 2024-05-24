@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="kpi")
+@Table(name = "kpi")
 public class Kpi {
 	@Id
 	private int node_id;
@@ -16,10 +16,9 @@ public class Kpi {
 	private double throughput;
 	private double error_rate;
 	private LocalDateTime timestamp;
-	
+
 	public Kpi() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Kpi(int node_id, int net_id, double latency, double throughput, double error_rate, LocalDateTime timestamp) {
@@ -80,5 +79,4 @@ public class Kpi {
 		this.timestamp = timestamp;
 	}
 
-	
 }

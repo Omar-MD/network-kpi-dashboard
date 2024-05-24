@@ -1,4 +1,4 @@
-package com.tools.subscriber;
+package com.tools.consumer;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -6,8 +6,14 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 @Entity
-@Table(name="nodeData")
+@Table(name = "node_kpi_data")
 public class NodeData {
     @Id
     private int nodeId;
@@ -15,6 +21,10 @@ public class NodeData {
     private double latency;
     private double throughput;
     private double errorRate;
+
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime timestamp;
 
     // Constructors, Getters, and Setters
