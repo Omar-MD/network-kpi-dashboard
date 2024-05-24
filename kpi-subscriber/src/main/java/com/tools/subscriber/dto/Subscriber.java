@@ -1,21 +1,11 @@
 package com.tools.subscriber.dto;
 
-import lombok.Data;
-//import javax.persistence.*;
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
-@Entity
-@Table(name = "subscribers")
 public class Subscriber {
 
-    @Column(nullable = false)
     private int nodeId;
-
-    @Column(nullable = false)
     private int networkId;
-
     private double latency;
     private double throughput;
     private double errorRate;
