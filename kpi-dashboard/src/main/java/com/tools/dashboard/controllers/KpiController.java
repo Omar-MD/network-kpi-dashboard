@@ -61,7 +61,7 @@ public class KpiController {
 		Optional<Kpi> kpi = kpiRepo.findById(id);
 		if(kpi.isPresent()) {
 			kpiRepo.deleteById(id);
-			return "Supply with id: "+id+" removed";
+			return "Kpi with id: "+id+" removed";
 		}else {
 			throw new KpiNotFoundException("No KPI with id: "+id);
 		}
