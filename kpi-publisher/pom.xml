@@ -15,7 +15,6 @@
 
 	<name>KPI Publisher Microservice</name>
 	<description>Microservice responsible for publishing KPI Data for Network KPI Dashboard Application</description>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
