@@ -20,7 +20,7 @@ public class PublisherService {
 
     @Bean
     public NewTopic topic() {
-        return TopicBuilder.name("performance-data-topic")
+        return TopicBuilder.name("node-kpi-data")
                 .partitions(10)
                 .replicas(1)
                 .build();

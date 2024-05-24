@@ -2,7 +2,8 @@ package com.tools.publisher;
 
 import java.time.LocalDateTime;
 
-public class PerformanceData {
+public class NodeData {
+
     private int nodeId;
     private int networkId;
     private double latency;
@@ -12,10 +13,10 @@ public class PerformanceData {
 
     // Constructors, Getters, and Setters
 
-    public PerformanceData() {
+    public NodeData() {
     }
 
-    public PerformanceData(int nodeId, int networkId, double latency, double throughput, double errorRate,
+    public NodeData(int nodeId, int networkId, double latency, double throughput, double errorRate,
             LocalDateTime timestamp) {
         this.nodeId = nodeId;
         this.networkId = networkId;
@@ -75,7 +76,7 @@ public class PerformanceData {
 
     @Override
     public String toString() {
-        return "PerformanceData{" +
+        return "NodeData{" +
                 "nodeId=" + nodeId +
                 ", networkId=" + networkId +
                 ", latency=" + latency +
