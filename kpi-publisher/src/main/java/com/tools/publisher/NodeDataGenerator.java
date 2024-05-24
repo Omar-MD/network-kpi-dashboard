@@ -13,21 +13,21 @@ import java.util.Set;
 
 @Slf4j
 @Service
-public class DataSimulatorGenerator {
+public class NodeDataGenerator {
 
     private final Random random = new Random();
     private final Set<Integer> usedNodeIds = new HashSet<>();
     private final Set<Integer> usedNetworkIds = new HashSet<>();
 
     @Autowired
-    private KafkaProducer kafkaProducer;
+    private NodeDataPublisher kafkaProducer;
 
     @Scheduled(fixedRate = 2000) // Run every 2 seconds
     public void generateMetrics() {
         int nodeId = generateUniqueId(usedNodeIds, 100);
         int networkId = generateUniqueId(usedNetworkIds, 10);
 
-        PerformanceData data = new PerformanceData(
+        NodeData data = new NodeData(
                 nodeId, // unique nodeId
                 networkId, // unique networkId
                 round(random.nextDouble() * 100), // latency rounded to 2 decimal places
@@ -36,7 +36,7 @@ public class DataSimulatorGenerator {
                 LocalDateTime.now() // timestamp
         );
 
-        kafkaProducer.sendMessage(data); // Publish data to Kafka topic
+        kafkaProducer.sendMessage(String.valueOf(nodeId), data); // Publish data to Kafka topic
         log.info("published: {" + data.toString() + "}");
     }
 
