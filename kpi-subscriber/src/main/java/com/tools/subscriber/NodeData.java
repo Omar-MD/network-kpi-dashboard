@@ -1,8 +1,8 @@
-package com.tools.subscriber.dto;
+package com.tools.subscriber;
 
 import java.time.LocalDateTime;
 
-public class Subscriber {
+public class NodeData {
 
     private int nodeId;
     private int networkId;
@@ -11,11 +11,13 @@ public class Subscriber {
     private double errorRate;
     private LocalDateTime timestamp;
 
+    // Constructors, Getters, and Setters
 
-    //Constructors, Getters
-    public Subscriber(){}
+    public NodeData() {
+    }
 
-    public Subscriber(int nodeId, int networkId, double latency, double throughput, double errorRate, LocalDateTime timestamp) {
+    public NodeData(int nodeId, int networkId, double latency, double throughput, double errorRate,
+            LocalDateTime timestamp) {
         this.nodeId = nodeId;
         this.networkId = networkId;
         this.latency = latency;
@@ -28,29 +30,53 @@ public class Subscriber {
         return nodeId;
     }
 
+    public void setNodeId(int nodeId) {
+        this.nodeId = nodeId;
+    }
+
     public int getNetworkId() {
         return networkId;
+    }
+
+    public void setNetworkId(int networkId) {
+        this.networkId = networkId;
     }
 
     public double getLatency() {
         return latency;
     }
 
+    public void setLatency(double latency) {
+        this.latency = latency;
+    }
+
     public double getThroughput() {
         return throughput;
+    }
+
+    public void setThroughput(double throughput) {
+        this.throughput = throughput;
     }
 
     public double getErrorRate() {
         return errorRate;
     }
 
+    public void setErrorRate(double errorRate) {
+        this.errorRate = errorRate;
+    }
+
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public String toString() {
-        return "Subscriber{" +
+        return "NodeData{" +
                 "nodeId=" + nodeId +
                 ", networkId=" + networkId +
                 ", latency=" + latency +
@@ -59,5 +85,4 @@ public class Subscriber {
                 ", timestamp=" + timestamp +
                 '}';
     }
-
-}//end of class
+}

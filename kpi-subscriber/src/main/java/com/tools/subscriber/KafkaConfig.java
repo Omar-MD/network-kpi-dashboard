@@ -1,4 +1,4 @@
-package com.tools.subscriber.kafka;
+package com.tools.subscriber;
 
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -21,15 +21,15 @@ public class KafkaConfig {
     @Bean
     public ConsumerFactory<String, Object> myConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,"localhost:9092");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "group1");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         return new DefaultKafkaConsumerFactory<>(props);
     }
 
-
-    // Tell Kafka about our ConsumerFactory, so Kafka can create listeners and deserialize messages.
+    // Tell Kafka about our ConsumerFactory, so Kafka can create listeners and
+    // deserialize messages.
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Object> myKafkaListenerContainerFactory(
             ConsumerFactory<String, Object> f) {

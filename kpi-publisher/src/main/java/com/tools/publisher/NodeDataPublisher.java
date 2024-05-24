@@ -12,7 +12,7 @@ public class NodeDataPublisher {
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void sendMessage(String key, Object value) {
+    public void sendMessage(String key, NodeData value) {
         kafkaTemplate.send(TOPIC_NAME, key, value);
     }
 }
