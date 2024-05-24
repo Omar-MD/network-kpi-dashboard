@@ -27,7 +27,7 @@
 
 	<modules>
 		<module>kpi-publisher</module>
-		<module>kpi-subscriber</module>
+		<module>kpi-consumer</module>
 		<module>kpi-dashboard</module>
 	</modules>
 

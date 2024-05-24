@@ -1,4 +1,4 @@
-package com.tools.subscriber;
+package com.tools.consumer;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -12,15 +12,17 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class NodeDataConsumer {
 
-    @KafkaListener(topics = "node-kpi-data", groupId = "group1")
+    @KafkaListener(topics = "node-kpi-data", groupId = "group1", containerFactory = "myKafkaListenerContainerFactory")
     public void consumer(
             @Header(KafkaHeaders.RECEIVED_KEY) String key,
             @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
             @Header(KafkaHeaders.RECEIVED_TIMESTAMP) long timestamp,
-            ConsumerRecord<String, Object> record) {
+            ConsumerRecord<String, NodeData> record) {
 
-        log.info("Consumed message: timestamp={}, topic={}, key={}, value={}", timestamp, topic, key, record.value());
-        // NodeData nd = (NodeData) record.value();
-        // log.warn(String.valueOf(nd.getNodeId()));
+        log.info("Consumed msg: topic={}, key={}, value={}", topic, key, record.value());
+
+        // Saving to NodeKPI_DB
+        NodeData nd = record.value();
+        System.out.println(nd);
     }
 }

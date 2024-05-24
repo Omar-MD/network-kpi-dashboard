@@ -37,7 +37,7 @@ public class NodeDataGenerator {
         );
 
         kafkaProducer.sendMessage(String.valueOf(nodeId), data); // Publish data to Kafka topic
-        log.info("published: {" + data.toString() + "}");
+        log.info("published: " + data);
     }
 
     private int generateUniqueId(Set<Integer> usedIds, int max) {

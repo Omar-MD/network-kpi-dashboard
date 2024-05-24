@@ -10,7 +10,7 @@ public class NodeDataPublisher {
     private static final String TOPIC_NAME = "node-kpi-data";
 
     @Autowired
-    private KafkaTemplate<String, Object> kafkaTemplate;
+    private KafkaTemplate<String, NodeData> kafkaTemplate;
 
     public void sendMessage(String key, NodeData value) {
         kafkaTemplate.send(TOPIC_NAME, key, value);
