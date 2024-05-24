@@ -1,6 +1,7 @@
 package com.tools.subscriber;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="nodeData")
 public class NodeData {
-
+    @Id
     private int nodeId;
     private int networkId;
     private double latency;
