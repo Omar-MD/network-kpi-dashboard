@@ -29,7 +29,7 @@ public class NodeDataGenerator {
 
         NodeData data = new NodeData(
                 nodeId, // unique nodeId
-                random.nextInt(), // unique networkId
+                random.nextInt(9999), // unique networkId
                 round(random.nextDouble() * 100), // latency rounded to 2 decimal places
                 round(random.nextDouble() * 10), // throughput rounded to 2 decimal places
                 round(random.nextDouble()), // errorRate rounded to 2 decimal places
