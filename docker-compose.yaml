@@ -1,19 +1,4 @@
 services:
-  mysql:
-    image: mysql:latest
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: network_node_kpi
-    ports:
-      - "3306:3306"
-    
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8085:8080
-
   zookeeper:
     image: 'bitnami/zookeeper:latest'
     ports:
@@ -37,7 +22,7 @@ services:
       - zookeeper
     healthcheck:
       test: ["CMD", "kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:9092"]
-      start_period: 15s
+      start_period: 5s
       interval: 10s
       timeout: 10s
       retries: 10
@@ -63,7 +48,30 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
-  
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql_db
+    environment:
+      MYSQL_DATABASE: network_node_kpi
+      MYSQL_USER: admin
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    
+  adminer:
+    image: adminer
+    ports:
+      - 8085:8080
+    depends_on:
+      mysql:
+        condition: service_healthy
+
   kpi-consumer:
     image: omar0md/kpi-consumer
     build:
@@ -72,4 +80,6 @@ services:
       - "8080:8080"
     depends_on:
       kafka:
+        condition: service_healthy
+      mysql:
         condition: service_healthy
