@@ -12,6 +12,5 @@ COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 
 EXPOSE 8080
-# Use wait-for-it in the entry point to wait for MySQL before starting the Java application
-ENTRYPOINT ["wait-for-it.sh", "mysql:3306", "--timeout=60", "--strict", "--", "java", "-cp", "app:app/lib/*", "com.tools.consumer.ConsumerService"]
+ENTRYPOINT ["java", "-cp", "app:app/lib/*", "com.tools.consumer.ConsumerService"]
 

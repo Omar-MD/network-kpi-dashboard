@@ -2,9 +2,9 @@ pipeline {
   agent any
 
   stages {
-    stage('Test Setup') {
+    stage('Compile and package') {
       steps {
-        echo "Hello"
+        sh './mvnw clean package -DskipTests'
       }
     }
   }
