@@ -1,4 +1,4 @@
-package com.tools.publisher;
+package com.tools.producer;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -18,7 +18,7 @@ public class KafkaConfig {
     public ProducerFactory<String, NodeData> myProducerFactory() {
 
         Map<String, Object> props = new HashMap<>();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, NodeDataSerializer.class);
         return new DefaultKafkaProducerFactory<>(props);

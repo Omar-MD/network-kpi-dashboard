@@ -1,4 +1,4 @@
-package com.tools.publisher;
+package com.tools.producer;
 
 import java.time.LocalDateTime;
 

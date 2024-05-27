@@ -1,8 +1,5 @@
 package com.tools.consumer;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -11,12 +8,21 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 @Entity
-@Table(name = "node_kpi_data")
 public class NodeData {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private int nodeId;
     private int networkId;
+
     private double latency;
     private double throughput;
     private double errorRate;
@@ -27,7 +33,6 @@ public class NodeData {
     private LocalDateTime timestamp;
 
     // Constructors, Getters, and Setters
-
     public NodeData() {
     }
 
@@ -39,6 +44,14 @@ public class NodeData {
         this.throughput = throughput;
         this.errorRate = errorRate;
         this.timestamp = timestamp;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getNodeId() {

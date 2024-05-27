@@ -1,4 +1,4 @@
-package com.tools.publisher;
+package com.tools.producer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,7 +20,7 @@ public class NodeDataGenerator {
     private final Set<Integer> usedNetworkIds = new HashSet<>();
 
     @Autowired
-    private NodeDataPublisher kafkaProducer;
+    private NodeDataProducer kafkaProducer;
 
     @Scheduled(fixedRate = 2000) // Run every 2 seconds
     public void generateMetrics() {

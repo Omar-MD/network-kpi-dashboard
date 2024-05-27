@@ -1,11 +1,11 @@
-package com.tools.publisher;
+package com.tools.producer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NodeDataPublisher {
+public class NodeDataProducer {
 
     private static final String TOPIC_NAME = "node-kpi-data";
 
