@@ -11,6 +11,11 @@ docker compose up -d --build
 
 3- Available UI's:
 adminer DB view: http://localhost:8085/
+- server: mysql
+- username: admin
+- password: root
+- database: network_node_kpi
+
 Kafka UI: http://localhost:8090/
 
 4- To see the logs of  a service
