@@ -83,3 +83,18 @@ services:
         condition: service_healthy
       mysql:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  
+  kpi-dashboard:
+    image: omar0md/kpi-dashboard
+    build:
+      context: ./kpi-dashboard
+    ports:
+      - "8081:8081"
+    depends_on:
+      kpi-consumer:
+        condition: service_healthy
