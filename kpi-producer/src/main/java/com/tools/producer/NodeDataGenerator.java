@@ -17,19 +17,19 @@ public class NodeDataGenerator {
 
     private final Random random = new Random();
     private final Set<Integer> usedNodeIds = new HashSet<>();
-    private final Set<Integer> usedNetworkIds = new HashSet<>();
+    //private final Set<Integer> usedNetworkIds = new HashSet<>();
 
     @Autowired
     private NodeDataProducer kafkaProducer;
 
     @Scheduled(fixedRate = 2000) // Run every 2 seconds
     public void generateMetrics() {
-        int nodeId = generateUniqueId(usedNodeIds, 100);
-        int networkId = generateUniqueId(usedNetworkIds, 10);
+        int nodeId = generateUniqueId(usedNodeIds, 9999);
+        //int networkId = generateUniqueId(usedNetworkIds, 10);
 
         NodeData data = new NodeData(
                 nodeId, // unique nodeId
-                networkId, // unique networkId
+                random.nextInt(9999), // unique networkId
                 round(random.nextDouble() * 100), // latency rounded to 2 decimal places
                 round(random.nextDouble() * 10), // throughput rounded to 2 decimal places
                 round(random.nextDouble()), // errorRate rounded to 2 decimal places

@@ -11,6 +11,6 @@ public class ConsumerService {
 
     public static void main(String[] args) {
         SpringApplication.run(ConsumerService.class, args);
-        log.info("Subscriber Service Running...");
+        log.info("Consumer Service Running...");
     }
 }
