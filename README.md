@@ -1,12 +1,30 @@
 # network_kpi_dashboard
 Real Time Network KPI Dashboard Service
 
-1- Kafka Service:
-// To start the service
-docker compose -f=Kafka-docker-compose.yaml up -d
+**Build and Start the Application:**
+1- Prepare Jars
+In application root i.e. network-kpi-dashboard/:
+mvn clean package -DskipTest
 
-// To stop and delete resource run: 
-docker compose -f=kafka-docker-compose.yaml down
+2- Build and start services
+docker compose up -d --build
 
-// To Use the Kafka UI:
-http://localhost:8090/
+3- Available UI's:
+adminer DB view: http://localhost:8085/
+- server: mysql
+- username: admin
+- password: root
+- database: network_node_kpi
+
+Kafka UI: http://localhost:8090/
+
+4- To see the logs of  a service
+docker logs {service-name}
+
+4- To stop and delete all resource run: 
+docker compose down
+
+**Application Pipeline (Jenkins):**
+url: http://13.51.233.71:8080/
+username: admin
+password: admin
