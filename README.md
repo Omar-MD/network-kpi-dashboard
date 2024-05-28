@@ -36,5 +36,5 @@ defaults to port 3000
 username: admin
 password: admin
 
-dashboard:
+dashboard: http://localhost:3000/public-dashboards/8758200bfa5241beac3944e73b2f0587
 
