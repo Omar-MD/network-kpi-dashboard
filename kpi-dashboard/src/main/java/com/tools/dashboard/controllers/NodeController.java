@@ -272,7 +272,8 @@ public class NodeController {
 	}
 
 	@RequestMapping("/kpi/average_metrics")
-	public ResponseEntity<List<Object[]>> getAverageMetrics() {List<Object[]> averagesList = nodeRepo.findAverageMetrics();
+	public ResponseEntity<List<Object[]>> getAverageMetrics() {
+		List<Object[]> averagesList = nodeRepo.findAverageMetrics();
 		if (averagesList != null && !averagesList.isEmpty()) {
 			return ResponseEntity.ok(averagesList);
 		} else {
