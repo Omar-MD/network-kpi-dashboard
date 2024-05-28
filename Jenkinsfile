@@ -18,9 +18,15 @@ pipeline {
       }
     }
 
-    stage('Clean, Test & Build') {
+    stage('Clean & Build') {
       steps {
         sh './mvnw clean package -Ddockerfile.skip'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        sh './mvnw test'
       }
     }
 
