@@ -34,12 +34,13 @@ pipeline {
       steps {
         withSonarQubeEnv('SonarQube') {
           sh "${SCANNER_HOME}/bin/sonar-scanner \
-                        -Dsonar.projectKey=network-kpi-dashboard \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=${SONARQUBE_URL} \
-                        -Dsonar.token=${SONARQUBE_TOKEN} \
-                        -Dsonar.java.binaries=kpi-consumer/target/classes,kpi-producer/target/classes,kpi-dashboard/target/classes \
-                        -Dsonar.java.libraries=kpi-consumer/target/*.jar,kpi-producer/target/*.jar,kpi-dashboard/target/*.jar"
+              -Dsonar.projectKey=network-kpi-dashboard \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=${SONARQUBE_URL} \
+              -Dsonar.token=${SONARQUBE_TOKEN} \
+              -Dsonar.java.binaries=kpi-consumer/target/classes,kpi-producer/target/classes,kpi-dashboard/target/classes \
+              -Dsonar.java.libraries=kpi-consumer/target/*.jar,kpi-producer/target/*.jar,kpi-dashboard/target/*.jar \
+              -Dsonar.coverage.jacoco.xmlReportPaths=kpi-consumer/target/site/jacoco/jacoco.xml,kpi-producer/target/site/jacoco/jacoco.xml,kpi-dashboard/target/site/jacoco/jacoco.xml"
         }
       }
     }
