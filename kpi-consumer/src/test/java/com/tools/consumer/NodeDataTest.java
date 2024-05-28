@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.tools.consumer.NodeData;
-
 public class NodeDataTest {
 
     private NodeData nodeData;
@@ -62,4 +60,3 @@ public class NodeDataTest {
         assertEquals(1, nodeData.getNodeId());
     }
 }
-

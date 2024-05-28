@@ -1,6 +1,5 @@
 package com.tools.consumer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.errors.SerializationException;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,10 +9,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class NodeDataDeserializerTest {
 
@@ -23,6 +20,7 @@ class NodeDataDeserializerTest {
     @InjectMocks
     private NodeDataDeserializer nodeDataDeserializer;
 
+    @SuppressWarnings("deprecation")
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -44,7 +42,6 @@ class NodeDataDeserializerTest {
         });
     }
 
-
     @Test
     void testDeserializeWithSerializationException() {
         byte[] data = "invalidData".getBytes();
@@ -54,4 +51,3 @@ class NodeDataDeserializerTest {
         });
     }
 }
-

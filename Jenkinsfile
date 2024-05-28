@@ -1,15 +1,47 @@
+/* groovylint-disable CompileStatic, DuplicateStringLiteral */
 pipeline {
   agent any
 
-  tools {
-    maven 'maven-3.9.7' // Use the global Maven tool named 'maven-3.9.7'
-    jdk 'jdk11' // Use the global JDK tool named 'jdk11'
+  environment {
+      // Use the environment variable for the SonarQube URL
+      SONARQUBE_SERVER = 'SonarQube'
+      SCANNER_HOME = tool 'SonarQube Scanner'
+      SONARQUBE_URL = "${env.SONARQUBE_URL}"
   }
 
   stages {
-    stage('Compile and package') {
+    stage('Checkout') {
       steps {
-        sh 'mvn clean package -DskipTests'
+        // Checkout code from the mounted workspace
+        checkout([$class: 'GitSCM', branches: [[name: '*/dev']], userRemoteConfigs: [[url: 'file:///network-kpi-dashboard']]])
+      }
+    }
+
+    stage('Clean, Test & Build') {
+      steps {
+        sh './mvnw clean package'
+      }
+    }
+
+    stage('SonarQube Analysis') {
+      steps {
+        withSonarQubeEnv('SonarQube') {
+          sh "${SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectKey=network-kpi-dashboard \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=${SONARQUBE_URL} \
+                        -Dsonar.login=admin \
+                        -Dsonar.password=admin"
+        }
+      }
+    }
+
+    stage('Quality Gate') {
+      steps {
+        // Wait for SonarQube analysis to be completed and check the Quality Gate status
+        timeout(time: 1, unit: 'HOURS') {
+          waitForQualityGate abortPipeline: true
+        }
       }
     }
   }

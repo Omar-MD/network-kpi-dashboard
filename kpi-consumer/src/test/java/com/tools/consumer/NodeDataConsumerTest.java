@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.kafka.support.KafkaHeaders;
-import org.springframework.messaging.handler.annotation.Header;
 
 import static org.mockito.Mockito.*;
 
@@ -19,6 +17,7 @@ class NodeDataConsumerTest {
     @InjectMocks
     private NodeDataConsumer nodeDataConsumer;
 
+    @SuppressWarnings("deprecation")
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -38,4 +37,3 @@ class NodeDataConsumerTest {
         verify(nodeDataRepo, times(1)).save(nodeData);
     }
 }
-
