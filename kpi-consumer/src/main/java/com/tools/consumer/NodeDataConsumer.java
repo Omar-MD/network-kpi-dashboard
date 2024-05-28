@@ -18,7 +18,7 @@ public class NodeDataConsumer {
 
     @KafkaListener(topics = "node-kpi-data", groupId = "group1", containerFactory = "myKafkaListenerContainerFactory")
     public void consumer(
-            @Header(KafkaHeaders.RECEIVED_KEY) String key,
+            @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,
             @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
             @Header(KafkaHeaders.RECEIVED_TIMESTAMP) long timestamp,
             ConsumerRecord<String, NodeData> record) {

@@ -2,9 +2,9 @@ package com.tools.dashboard.dto;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "kpi")
@@ -14,7 +14,7 @@ public class Kpi {
 	private int net_id;
 	private double latency;
 	private double throughput;
-	private double error_rate;
+	private double errorRate;
 	private LocalDateTime timestamp;
 
 	public Kpi() {
@@ -27,7 +27,7 @@ public class Kpi {
 		this.net_id = net_id;
 		this.latency = latency;
 		this.throughput = throughput;
-		this.error_rate = error_rate;
+		this.errorRate = error_rate;
 		this.timestamp = timestamp;
 	}
 
@@ -64,11 +64,11 @@ public class Kpi {
 	}
 
 	public double getError_rate() {
-		return error_rate;
+		return errorRate;
 	}
 
 	public void setError_rate(double error_rate) {
-		this.error_rate = error_rate;
+		this.errorRate = error_rate;
 	}
 
 	public LocalDateTime getTimestamp() {

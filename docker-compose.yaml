@@ -1,19 +1,6 @@
 services:
-  mysql:
-    image: mysql:latest
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: network_node_kpi
-    ports:
-      - "3306:3306"
-    
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8085:8080
 
+  #  --------- KAFKA -----------
   zookeeper:
     image: 'bitnami/zookeeper:latest'
     ports:
@@ -33,37 +20,45 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT_HOST://kafka:29092
-    depends_on:
-      - zookeeper
     healthcheck:
       test: ["CMD", "kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:9092"]
-      start_period: 15s
-      interval: 10s
-      timeout: 10s
-      retries: 10
+      start_period: 5s 
+      timeout: 10s  
+      interval: 10s 
+      retries: 5
 
   kafka-ui:
     image: 'provectuslabs/kafka-ui:latest'
     ports:
       - "8090:8080"
-    depends_on:
-      kafka:
-        condition: service_healthy
     environment:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
       KAFKA_CLUSTERS_0_METRICS_PORT: 9997
 
-  kpi-producer:
-    image: omar0md/kpi-producer
-    build:
-      context: ./kpi-producer
+  #  --------- MySQL DB -----------
+  mysql:
+    image: mysql:latest
+    container_name: mysql_db
+    environment:
+      MYSQL_DATABASE: network_node_kpi
+      MYSQL_USER: admin
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
     ports:
-      - "8082:8082"
-    depends_on:
-      kafka:
-        condition: service_healthy
-  
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      interval: 10s
+      retries: 5
+    
+  adminer:
+    image: adminer
+    ports:
+      - 8085:8080
+
+  #  --------- Consumer -----------
   kpi-consumer:
     image: omar0md/kpi-consumer
     build:
@@ -73,3 +68,32 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: "wget --tries=1 -q -O - localhost:8080/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  #  --------- Producer -----------
+  kpi-producer:
+    image: omar0md/kpi-producer
+    build:
+      context: ./kpi-producer
+    ports:
+      - "8082:8082"
+    depends_on:
+      kpi-consumer:
+        condition: service_healthy
+
+
+  # kpi-dashboard:
+  #   image: omar0md/kpi-dashboard
+  #   build:
+  #     context: ./kpi-dashboard
+  #   ports:
+  #     - "8081:8081"
+  #   depends_on:
+  #     kpi-consumer:
+  #       condition: service_healthy
