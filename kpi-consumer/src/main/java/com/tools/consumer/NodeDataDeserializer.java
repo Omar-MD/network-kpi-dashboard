@@ -26,4 +26,5 @@ public class NodeDataDeserializer implements Deserializer<NodeData> {
             throw new SerializationException("Error when deserializing byte[] to NodeData");
         }
     }
+
 }
