@@ -12,7 +12,12 @@
 .idea/**/dictionaries
 .idea/**/shelf
 .settings/
+
 jenkins_home/
+sonarqube_conf/
+sonarqube_data/
+
+
 # AWS User-specific
 .idea/**/aws.xml
 

@@ -4,13 +4,14 @@ services:
     environment:
       - SONARQUBE_URL=http://sonarqube:9000
       - JAVA_OPTS=-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true
-      - SONAR_TOKEN=sqa_e8b62edc51ebc76adb77ea42811b520042e46139
+      - SONAR_TOKEN=sqa_050ad6c56788d12b62e371ba4d1db42909ccd154
     ports:
       - "8089:8080"
       - "50000:50000"
     volumes:
       - ./jenkins_home:/var/jenkins_home
       - .:/network-kpi-dashboard
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - jenkins-sonar-network
   
@@ -20,6 +21,9 @@ services:
       - sonar.forceAuthentication=false
     ports:
       - "9000:9000"
+    volumes:
+      - ./sonarqube_data:/opt/sonarqube/data
+      - ./sonarqube_conf:/opt/sonarqube/conf
     networks:
       - jenkins-sonar-network
 

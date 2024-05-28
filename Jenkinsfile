@@ -19,7 +19,7 @@ pipeline {
 
     stage('Clean, Test & Build') {
       steps {
-        sh './mvnw clean package'
+        sh './mvnw clean package -Ddockerfile.skip'
       }
     }
 
@@ -42,6 +42,12 @@ pipeline {
         timeout(time: 1, unit: 'HOURS') {
           waitForQualityGate abortPipeline: true
         }
+      }
+    }
+
+    stage('Build Docker Image') {
+      steps {
+          sh './mvnw dockerfile:build'
       }
     }
   }
