@@ -32,7 +32,7 @@ pipeline {
                         -Dsonar.host.url=${SONARQUBE_URL} \
                         -Dsonar.login=admin \
                         -Dsonar.password=sonar \
-                        -Dsonar.exclusions=**/*.class"
+                        -Dsonar.java.binaries=kpi-consumer/target/classes,kpi-producer/target/classes,kpi-dashboard/target/classes"
         }
       }
     }
