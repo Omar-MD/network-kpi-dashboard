@@ -30,7 +30,9 @@ username: admin
 password: admin
 
 Grafana: docker run -d --name grafana --network host grafana/grafana
+
 defaults to port 3000
+
 username: admin
 password: admin
 
