@@ -79,5 +79,11 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-extension</artifactId>
+			</extension>
+		</extensions>
 	</build>
 </project>

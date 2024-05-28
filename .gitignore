@@ -27,6 +27,7 @@
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
+.factorypath/
 
 # Gradle
 .idea/**/gradle.xml
