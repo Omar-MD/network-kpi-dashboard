@@ -17,11 +17,11 @@ public class NodeData_DTO_Test {
 		nd = new NodeData();
 	}
 	
-//	@Test
-//	void testNodeId() {
-//		nd.setNetworkId(15);
-//		assertEquals(15, nd.getId());
-//	}
+	@Test
+	void testNodeId() {
+		nd.setNetworkId(15);
+		assertEquals(15, nd.getNodeId());
+	}
 	
 	@Test
 	void testNetId() {

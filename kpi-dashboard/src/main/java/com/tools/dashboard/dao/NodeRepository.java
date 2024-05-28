@@ -19,12 +19,12 @@ public interface NodeRepository extends JpaRepository<NodeData, Long>{
 	Optional<List<NodeData>> findByNodeId(int id);
 	Optional<List<NodeData>> findByNetworkId(int id);
 
-    //New
-    @Query("SELECT AVG(k.latency), AVG(k.errorRate), AVG(k.throughput) FROM Kpi k")
+//    //New
+    @Query("SELECT AVG(nd.latency), AVG(nd.errorRate), AVG(nd.throughput) FROM NodeData nd")
     List<Object[]> findAverageMetrics();
 
     @Query(value = "SELECT node_id, MAX(latency) AS max_latency, MAX(throughput) AS max_throughput, MAX(error_rate) AS max_error_rate " +
-            "FROM kpi " +
+            "FROM Node_data " +
             "GROUP BY node_id " +
             "ORDER BY max_latency DESC, max_throughput DESC, max_error_rate DESC " +
             "LIMIT 1", nativeQuery = true)
@@ -39,35 +39,35 @@ public interface NodeRepository extends JpaRepository<NodeData, Long>{
     //node with lowest throughput
 
     //Latency over time - select latency from table
-    @Query("SELECT k.latency, k.timestamp FROM Kpi k")
+    @Query("SELECT nd.latency, nd.timestamp FROM NodeData nd")
     List<Object[]> findLatencyTimestamps();
     //error rate over time - select error_rate from table
-    @Query("SELECT k.errorRate, k.timestamp FROM Kpi k")
+    @Query("SELECT nd.errorRate, nd.timestamp FROM NodeData nd")
     List<Object[]> findErrorRateTimestamps();
     //throughput over time - select throughput from table
-    @Query("SELECT k.throughput, k.timestamp FROM Kpi k")
+    @Query("SELECT nd.throughput, nd.timestamp FROM NodeData nd")
     List<Object[]> findThroughputTimestamps();
     //correlation matrix - latency, error rate, throughput - heatmap?
-    @Query("SELECT k.latency, k.errorRate, k.throughput FROM Kpi k")
+    @Query("SELECT nd.latency, nd.errorRate, nd.throughput FROM NodeData nd")
     List<Object[]> findAllLatencyErrorRateThroughput();
 
     //error rate vs throughput - scatter - select both
-    @Query("SELECT k.errorRate, k.throughput FROM Kpi k")
+    @Query("SELECT nd.errorRate, nd.throughput FROM NodeData nd")
     List<Object[]> findErrorVsThroughput();
     //latency vs throughput - scatter - select both
-    @Query("SELECT k.latency, k.throughput FROM Kpi k")
+    @Query("SELECT nd.latency, nd.throughput FROM NodeData nd")
     List<Object[]> findLatencyVsThroughput();
     //top n nodes by attributes - bar? - all three
-    @Query("SELECT k FROM Kpi k ORDER BY k.latency DESC")
+    @Query("SELECT nd FROM NodeData nd ORDER BY nd.latency DESC")
     List<NodeData> findTop10Nodes_Latency();
     //average latency per network
-    @Query("SELECT k.net_id, avg(k.latency) from Kpi k GROUP BY k.net_id")
+    @Query("SELECT nd.networkId, avg(nd.latency) from NodeData nd GROUP BY nd.networkId")
     List<Object[]> findAvgLatencyPerNetwork();
     //avg error rate per
-    @Query("SELECT k.net_id, avg(k.errorRate) from Kpi k GROUP BY k.net_id")
+    @Query("SELECT nd.networkId, avg(nd.errorRate) from NodeData nd GROUP BY nd.networkId")
     List<Object[]> findAvgErrorPerNetwork();
     //avg througjput per
-    @Query("SELECT k.net_id, avg(k.throughput) from Kpi k GROUP BY k.net_id")
+    @Query("SELECT nd.networkId, avg(nd.throughput) from NodeData nd GROUP BY nd.networkId")
     List<Object[]> findAvgThroughputPerNetwork();
 
     //heatmaps
