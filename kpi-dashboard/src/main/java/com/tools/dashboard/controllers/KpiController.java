@@ -248,4 +248,24 @@ public class KpiController {
 			return new ResponseEntity<List<Object[]>>(avg_throughput_per_network, HttpStatus.NO_CONTENT);
 		}
 	}
+
+	@RequestMapping("/kpi/average_metrics")
+	public ResponseEntity<List<Object[]>> getAverageMetrics() {List<Object[]> averagesList = kpiRepo.findAverageMetrics();
+		if (averagesList != null && !averagesList.isEmpty()) {
+			return ResponseEntity.ok(averagesList);
+		} else {
+			return ResponseEntity.noContent().build();
+		}
+	}
+
+
+	@RequestMapping("kpi/node_highest_metrics")
+	public ResponseEntity<List<Object[]>> getNodeWithHighestMetrics() {
+		List<Object[]> result = kpiRepo.findNodeWithHighestMetrics();
+		if (!result.isEmpty()) {
+			return ResponseEntity.ok(result);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Or return ResponseEntity.noContent().build();
+		}
+	}
 }
