@@ -119,4 +119,94 @@ public class KpiController {
 		}
 	}
 	
+	@RequestMapping("/kpi/latency_over_time")
+	public ResponseEntity<List<Object[]>> getAllLatencyTimestamps(){
+		List<Object[]> latencyTimestamps = new ArrayList<>();
+		latencyTimestamps = kpiRepo.findLatencyTimestamps();
+		
+		if(latencyTimestamps.size() > 0) {
+			return new ResponseEntity<List<Object[]>>(latencyTimestamps, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<List<Object[]>>(latencyTimestamps, HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@RequestMapping("/kpi/error_rate_over_time")
+	public ResponseEntity<List<Object[]>> getAllErrorRateTimestamps(){
+		List<Object[]> errorRateTimestamps = new ArrayList<>();
+		errorRateTimestamps = kpiRepo.findErrorRateTimestamps();
+
+		if(errorRateTimestamps.size() > 0) {
+			return new ResponseEntity<List<Object[]>>(errorRateTimestamps, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<List<Object[]>>(errorRateTimestamps, HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@RequestMapping("/kpi/throughput_over_time")
+	public ResponseEntity<List<Object[]>> getAllThroughputTimestamps(){
+		List<Object[]> throughputTimestamps = new ArrayList<>();
+		throughputTimestamps = kpiRepo.findThroughputTimestamps();
+
+		if(throughputTimestamps.size() > 0) {
+			return new ResponseEntity<List<Object[]>>(throughputTimestamps, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<List<Object[]>>(throughputTimestamps, HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@RequestMapping("/kpi/latency_error_rate_throughput")
+	public ResponseEntity<List<Object[]>> getLatencyErrorRateThroughput(){
+		List<Object[]> l_er_t = new ArrayList<>();
+		l_er_t = kpiRepo.findAllLatencyErrorRateThroughput();	
+		
+		if(l_er_t.size() > 0) {
+			return new ResponseEntity<List<Object[]>>(l_er_t, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<List<Object[]>>(l_er_t, HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@RequestMapping("/kpi/error_vs_throughput")
+	public ResponseEntity<List<Object[]>> getErrorRateVsThroughput(){
+		List<Object[]> errorrate_vs_throughput = new ArrayList<>();
+		errorrate_vs_throughput = kpiRepo.findErrorVsThroughput();
+		
+		if(errorrate_vs_throughput.size() > 0) {
+			return new ResponseEntity<List<Object[]>>(errorrate_vs_throughput, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<List<Object[]>>(errorrate_vs_throughput, HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@RequestMapping("/kpi/latency_vs_throughput")
+	public ResponseEntity<List<Object[]>> getLatencyVsThroughput(){
+		List<Object[]> latency_vs_throughput = new ArrayList<>();
+		latency_vs_throughput = kpiRepo.findLatencyVsThroughput();
+		
+		if(latency_vs_throughput.size() > 0) {
+			return new ResponseEntity<List<Object[]>>(latency_vs_throughput, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<List<Object[]>>(latency_vs_throughput, HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@RequestMapping("/kpi/top_ten_latency")
+	public ResponseEntity<List<Kpi>> getTopTenNodes_Latency(){
+		List<Kpi> top10_latency = new ArrayList<>();
+		top10_latency = kpiRepo.findTop10Nodes_Latency();
+		
+		if(top10_latency.size() > 0) {
+			return new ResponseEntity<List<Kpi>>(top10_latency, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<List<Kpi>>(top10_latency, HttpStatus.NO_CONTENT);
+		}
+	}
 }

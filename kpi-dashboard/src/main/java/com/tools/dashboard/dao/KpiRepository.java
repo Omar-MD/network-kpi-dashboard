@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.tools.dashboard.dto.Kpi;
@@ -24,14 +25,28 @@ public interface KpiRepository extends JpaRepository<Kpi, Integer>{
 	//node with lowest throughput
 	
 	//Latency over time - select latency from table
+	@Query("SELECT k.latency, k.timestamp FROM Kpi k")
+	List<Object[]> findLatencyTimestamps();
 	//error rate over time - select error_rate from table
+	@Query("SELECT k.errorRate, k.timestamp FROM Kpi k")
+	List<Object[]> findErrorRateTimestamps();
 	//throughput over time - select throughput from table
-	//correlation matrix - latency, error rate, throughput - heatmap - select latency, errorrate throughput from table
+	@Query("SELECT k.throughput, k.timestamp FROM Kpi k")
+	List<Object[]> findThroughputTimestamps();
+	//correlation matrix - latency, error rate, throughput - heatmap?
+	@Query("SELECT k.latency, k.errorRate, k.throughput FROM Kpi k")
+	List<Object[]> findAllLatencyErrorRateThroughput();
+		
 	//error rate vs throughput - scatter - select both
+	@Query("SELECT k.errorRate, k.throughput FROM Kpi k")
+	List<Object[]> findErrorVsThroughput();
 	//latency vs throughput - scatter - select both
-	//top n nodes by attributes - bar - all three - select, order by, limit
-
-	
+	@Query("SELECT k.latency, k.throughput FROM Kpi k")
+	List<Object[]> findLatencyVsThroughput();
+	//top n nodes by attributes - bar? - all three
+	@Query("SELECT k FROM Kpi k ORDER BY k.latency DESC")
+	List<Kpi> findTop10Nodes_Latency();
+	//average attributes per network
 	
 	
 	//heatmaps
