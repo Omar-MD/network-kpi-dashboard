@@ -31,7 +31,7 @@ pipeline {
                         -Dsonar.projectKey=network-kpi-dashboard \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=${SONARQUBE_URL} \
-                        -Dsonar.login=${SONARQUBE_TOKEN} \
+                        -Dsonar.token=${SONARQUBE_TOKEN} \
                         -Dsonar.java.binaries=kpi-consumer/target/classes,kpi-producer/target/classes,kpi-dashboard/target/classes \
                         -Dsonar.java.libraries=kpi-consumer/target/*.jar,kpi-producer/target/*.jar,kpi-dashboard/target/*.jar"
         }
