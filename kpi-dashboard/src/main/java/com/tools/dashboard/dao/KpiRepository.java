@@ -46,8 +46,15 @@ public interface KpiRepository extends JpaRepository<Kpi, Integer>{
 	//top n nodes by attributes - bar? - all three
 	@Query("SELECT k FROM Kpi k ORDER BY k.latency DESC")
 	List<Kpi> findTop10Nodes_Latency();
-	//average attributes per network
-	
+	//average latency per network
+	@Query("SELECT k.net_id, avg(k.latency) from Kpi k GROUP BY k.net_id")
+	List<Object[]> findAvgLatencyPerNetwork();
+	//avg error rate per
+	@Query("SELECT k.net_id, avg(k.errorRate) from Kpi k GROUP BY k.net_id")
+	List<Object[]> findAvgErrorPerNetwork();
+	//avg througjput per
+	@Query("SELECT k.net_id, avg(k.throughput) from Kpi k GROUP BY k.net_id")
+	List<Object[]> findAvgThroughputPerNetwork();
 	
 	//heatmaps
 	//Mean LAtency

@@ -209,4 +209,43 @@ public class KpiController {
 			return new ResponseEntity<List<Kpi>>(top10_latency, HttpStatus.NO_CONTENT);
 		}
 	}
+	
+	@RequestMapping("/kpi/avg_latency_per_network")
+	public ResponseEntity<List<Object[]>> getAvgLatencyPerNetwork(){
+		List<Object[]> avg_latency_per_network = new ArrayList<>();
+		avg_latency_per_network = kpiRepo.findAvgLatencyPerNetwork();
+		
+		if(avg_latency_per_network.size() > 0) {
+			return new ResponseEntity<List<Object[]>>(avg_latency_per_network, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<List<Object[]>>(avg_latency_per_network, HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@RequestMapping("/kpi/avg_error_rate_per_network")
+	public ResponseEntity<List<Object[]>> getAvgErrorRatePerNetwork(){
+		List<Object[]> avg_error_rate_per_network = new ArrayList<>();
+		avg_error_rate_per_network = kpiRepo.findAvgErrorPerNetwork();
+		
+		if(avg_error_rate_per_network.size() > 0) {
+			return new ResponseEntity<List<Object[]>>(avg_error_rate_per_network, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<List<Object[]>>(avg_error_rate_per_network, HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@RequestMapping("/kpi/avg_throughput_per_network")
+	public ResponseEntity<List<Object[]>> getAvgThroughputPerNetwork(){
+		List<Object[]> avg_throughput_per_network = new ArrayList<>();
+		avg_throughput_per_network = kpiRepo.findAvgThroughputPerNetwork();
+		
+		if(avg_throughput_per_network.size() > 0) {
+			return new ResponseEntity<List<Object[]>>(avg_throughput_per_network, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<List<Object[]>>(avg_throughput_per_network, HttpStatus.NO_CONTENT);
+		}
+	}
 }
