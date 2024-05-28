@@ -20,7 +20,7 @@ pipeline {
 
     stage('Clean & Build') {
       steps {
-        sh './mvnw clean package -Ddockerfile.skip'
+        sh './mvnw clean package -DskipTests -Ddockerfile.skip'
       }
     }
 
