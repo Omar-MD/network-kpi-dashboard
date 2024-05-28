@@ -36,5 +36,5 @@ defaults to port 3000
 username: admin
 password: admin
 
-dashboard: http://localhost:3000/public-dashboards/8758200bfa5241beac3944e73b2f0587
+dashboard: https://snapshots.raintank.io/dashboard/snapshot/teN0eYATDhe9QWEfvybeFye6FkR3QIyG
 
