@@ -48,7 +48,7 @@ pipeline {
     stage('Quality Gate Check') {
       steps {
         script {
-          def waitForQualityGateStep = waitForQualityGate(token: SONARQUBE_TOKEN)
+          def waitForQualityGateStep = waitForQualityGate()
           if (waitForQualityGate.status != 'OK') {
             error "Pipeline aborted due to quality gate failure: ${waitForQualityGate.status}"
           }
