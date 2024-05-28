@@ -7,6 +7,7 @@ pipeline {
       SONARQUBE_SERVER = 'SonarQube'
       SCANNER_HOME = tool 'SonarQube Scanner'
       SONARQUBE_URL = "${env.SONARQUBE_URL}"
+      SONARQUBE_TOKEN = "${env.SONAR_TOKEN}"
   }
 
   stages {
@@ -30,18 +31,20 @@ pipeline {
                         -Dsonar.projectKey=network-kpi-dashboard \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=${SONARQUBE_URL} \
-                        -Dsonar.login=admin \
-                        -Dsonar.password=sonar \
-                        -Dsonar.java.binaries=kpi-consumer/target/classes,kpi-producer/target/classes,kpi-dashboard/target/classes"
+                        -Dsonar.login=${SONARQUBE_TOKEN} \
+                        -Dsonar.java.binaries=kpi-consumer/target/classes,kpi-producer/target/classes,kpi-dashboard/target/classes \
+                        -Dsonar.java.libraries=kpi-consumer/target/*.jar,kpi-producer/target/*.jar,kpi-dashboard/target/*.jar"
         }
       }
     }
 
-    stage('Quality Gate') {
+    stage('Quality Gate Check') {
       steps {
-        // Wait for SonarQube analysis to be completed and check the Quality Gate status
-        timeout(time: 1, unit: 'HOURS') {
-          waitForQualityGate abortPipeline: true
+        script {
+          def waitForQualityGateStep = waitForQualityGate(token: ${ SONARQUBE_TOKEN })
+          if (waitForQualityGate.status != 'OK') {
+            error "Pipeline aborted due to quality gate failure: ${waitForQualityGate.status}"
+          }
         }
       }
     }
