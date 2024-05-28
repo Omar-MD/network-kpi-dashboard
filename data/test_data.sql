@@ -1,5 +1,15 @@
-USE DATABASE network_node_kpi;
+USE network_node_kpi;
 
+drop table if exists node_data;
+CREATE TABLE node_data (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    node_id INT NOT NULL,
+    network_id INT NOT NULL,
+    latency DOUBLE NOT NULL,
+    throughput DOUBLE NOT NULL,
+    error_rate DOUBLE NOT NULL,
+    timestamp DATETIME NOT NULL
+);
 
 INSERT INTO `node_data` (`id`, `error_rate`, `latency`, `network_id`, `node_id`, `throughput`, `timestamp`) VALUES
 (1,	0.78,	31.9,	2,	89,	9.68,	'2024-05-28 12:28:39.000000'),
