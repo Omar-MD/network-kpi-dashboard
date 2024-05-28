@@ -31,7 +31,7 @@ pipeline {
                         -Dsonar.sources=. \
                         -Dsonar.host.url=${SONARQUBE_URL} \
                         -Dsonar.login=admin \
-                        -Dsonar.password=admin"
+                        -Dsonar.password=sonar"
         }
       }
     }
