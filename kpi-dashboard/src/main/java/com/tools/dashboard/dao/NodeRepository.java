@@ -2,19 +2,22 @@ package com.tools.dashboard.dao;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.tools.dashboard.dto.Kpi;
+import com.tools.dashboard.dto.NodeData;
 
 @Repository
-public interface KpiRepository extends JpaRepository<Kpi, Integer>{
-	List<Kpi> findByTimestampBetween(LocalDateTime start, LocalDateTime end);
-	List<Kpi> findByLatencyBetween(double low, double high);
-	List<Kpi> findByThroughputBetween(double low, double high);
-	List<Kpi> findByErrorRateBetween(double low, double high);
+public interface NodeRepository extends JpaRepository<NodeData, Long>{
+	List<NodeData> findByTimestampBetween(LocalDateTime start, LocalDateTime end);
+	List<NodeData> findByLatencyBetween(double low, double high);
+	List<NodeData> findByThroughputBetween(double low, double high);
+	List<NodeData> findByErrorRateBetween(double low, double high);
+	Optional<List<NodeData>> findByNodeId(int id);
+	Optional<List<NodeData>> findByNetworkId(int id);
 
     //New
     @Query("SELECT AVG(k.latency), AVG(k.errorRate), AVG(k.throughput) FROM Kpi k")
@@ -56,7 +59,7 @@ public interface KpiRepository extends JpaRepository<Kpi, Integer>{
     List<Object[]> findLatencyVsThroughput();
     //top n nodes by attributes - bar? - all three
     @Query("SELECT k FROM Kpi k ORDER BY k.latency DESC")
-    List<Kpi> findTop10Nodes_Latency();
+    List<NodeData> findTop10Nodes_Latency();
     //average latency per network
     @Query("SELECT k.net_id, avg(k.latency) from Kpi k GROUP BY k.net_id")
     List<Object[]> findAvgLatencyPerNetwork();

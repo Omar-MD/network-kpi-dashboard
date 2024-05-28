@@ -22,17 +22,17 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.tools.dashboard.controllers.KpiController;
-import com.tools.dashboard.dao.KpiRepository;
-import com.tools.dashboard.dto.Kpi;
-import com.tools.dashboard.exceptions.KpiNotFoundException;
+import com.tools.dashboard.controllers.NodeController;
+import com.tools.dashboard.dao.NodeRepository;
+import com.tools.dashboard.dto.NodeData;
+import com.tools.dashboard.exceptions.NodeNotFoundException;
 
 public class Kpi_Controller_Test {
 	@Mock
-	private KpiRepository kpiRepo;
+	private NodeRepository nodeRepo;
 	
 	@InjectMocks
-	private KpiController kc;
+	private NodeController nc;
 	
 	@BeforeEach
 	public void setUp() {
@@ -41,30 +41,30 @@ public class Kpi_Controller_Test {
 	
 	@Test
 	public void getAllKpi_Test() {
-		List<Kpi> kpiList = createKpiIterable();
-		when(kpiRepo.findAll()).thenReturn(kpiList);
+		List<NodeData> kpiList = createNodeIterable();
+		when(nodeRepo.findAll()).thenReturn(kpiList);
 		
-		Iterable<Kpi> kpis = kc.getAllKpis();
+		Iterable<NodeData> kpis = nc.getAllNodes();
 		assertEquals(kpiList, kpis);
 	}
 	
 	@Test
-	public void getKpiById_Test() {
+	public void getNodeById_Test() {
 		LocalDateTime dateTime = LocalDateTime.of(2024, 5, 24, 10, 22, 22, 412000000);
-		Kpi kpi1 = new Kpi(1,100,20.3,180,0.02, dateTime);
-		when(kpiRepo.findById(kpi1.getNode_id())).thenReturn(Optional.of(kpi1));
+		NodeData node1 = new NodeData(1,100,20.3,180,0.02, dateTime);
+		when(nodeRepo.findById(node1.getId())).thenReturn(Optional.of(node1));
 		
-		Optional<Kpi> kpiById = kc.getKpiById(kpi1.getNode_id());
-		assertTrue(kpiById.isPresent());
-		assertEquals(kpi1, kpiById.get());
+		Optional<NodeData> nodeById = nc.getNodeById(node1.getId());
+		assertTrue(nodeById.isPresent());
+		assertEquals(node1, nodeById.get());
 	}
 	
 	@Test
 	public void getKpiById_IdNotFound_Test() {
-		when(kpiRepo.findById(999)).thenReturn(Optional.empty());
+		when(nodeRepo.findById(999L)).thenReturn(Optional.empty());
 		
-		assertThrows(KpiNotFoundException.class, () ->{
-			kc.getKpiById(999);
+		assertThrows(NodeNotFoundException.class, () ->{
+			nc.getNodeById(999L);
 		});
 	}
 
@@ -72,19 +72,19 @@ public class Kpi_Controller_Test {
 	@Test
 	public void addOrUpdateKpi_Test() {
 		LocalDateTime dateTime = LocalDateTime.of(2024, 5, 24, 10, 22, 22, 412000000);
-		Kpi kpi1 = new Kpi(1,100,20.3,180,0.02, dateTime);
-		when(kpiRepo.save(kpi1)).thenReturn(kpi1);
+		NodeData node1 = new NodeData(1,100,20.3,180,0.02, dateTime);
+		when(nodeRepo.save(node1)).thenReturn(node1);
 		
-        ResponseEntity<?> responseEntity = kc.addOrUpdateKpi(kpi1);
+        ResponseEntity<?> responseEntity = nc.addOrUpdateNode(node1);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(kpi1, responseEntity.getBody());
+        assertEquals(node1, responseEntity.getBody());
 	}
 	
 	@Test
 	void AddOrUpdateKpi_FailedToSave_Test() {
-	    when(kpiRepo.save(any(Kpi.class))).thenThrow(new RuntimeException());
+	    when(nodeRepo.save(any(NodeData.class))).thenThrow(new RuntimeException());
 
-	    ResponseEntity<?> responseEntity = kc.addOrUpdateKpi(new Kpi());
+	    ResponseEntity<?> responseEntity = nc.addOrUpdateNode(new NodeData());
 
 	    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
 	    assertEquals("An error occurred: null", responseEntity.getBody());
@@ -92,31 +92,31 @@ public class Kpi_Controller_Test {
 	
 	@Test
 	void testAddOrUpdateKpi_AnErrorOccurred() {
-	    ResponseEntity<?> responseEntity = kc.addOrUpdateKpi(null);
+	    ResponseEntity<?> responseEntity = nc.addOrUpdateNode(null);
 
 	    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-	    assertEquals("Failed to save KPI", responseEntity.getBody());
+	    assertEquals("Failed to save Node", responseEntity.getBody());
 	}
 	
 	@Test
 	public void deleteKpi_Test() {
 		LocalDateTime dateTime = LocalDateTime.of(2024, 5, 24, 10, 22, 22, 412000000);
-		Kpi kpi1 = new Kpi(1,100,20.3,180,0.02, dateTime);
-		when(kpiRepo.findById(1)).thenReturn(Optional.of(kpi1));
+		NodeData kpi1 = new NodeData(1,100,20.3,180,0.02, dateTime);
+		when(nodeRepo.findById(1L)).thenReturn(Optional.of(kpi1));
 
-        String result = kc.deleteKpi(1);
+        String result = nc.deleteNode(1L);
 
-        verify(kpiRepo, times(1)).deleteById(1);
+        verify(nodeRepo, times(1)).deleteById(1L);
 
-        assertEquals("Kpi with id: 1 removed", result);
+        assertEquals("NodeData with id: 1 removed", result);
 	}
 	
 	@Test
 	public void deleteKpi_IdNotFound_Test() {
-		when(kpiRepo.findById(999)).thenReturn(Optional.empty());
+		when(nodeRepo.findById(999L)).thenReturn(Optional.empty());
 		
-		assertThrows(KpiNotFoundException.class, () ->{
-			kc.deleteKpi(999);
+		assertThrows(NodeNotFoundException.class, () ->{
+			nc.deleteNode(999L);
 		});
 	}
 	
@@ -125,139 +125,139 @@ public class Kpi_Controller_Test {
 //	public void getKpiInTimeframe_Test() {
 //		LocalDateTime dateTimeLow = LocalDateTime.of(2024, 5, 25, 10, 22, 22, 412000000);
 //		LocalDateTime dateTimeHigh = LocalDateTime.of(2024, 5, 27, 10, 22, 22, 412000000);
-//		Kpi kpi1 = new Kpi(1,100,20.3,180,0.02, dateTimeLow);
-//		Kpi kpi2 = new Kpi(2,200,18.5,210,0.018, dateTimeHigh);
-//		List<Kpi> kpiInRange = new ArrayList<>();
+//		NodeData kpi1 = new NodeData(1,100,20.3,180,0.02, dateTimeLow);
+//		NodeData kpi2 = new NodeData(2,200,18.5,210,0.018, dateTimeHigh);
+//		List<NodeData> kpiInRange = new ArrayList<>();
 //		kpiInRange.add(kpi1);
 //		kpiInRange.add(kpi2);
-//		List<Kpi> kpis = createKpiIterable();
+//		List<NodeData> kpis = createKpiIterable();
 //		kpis.addAll(kpiInRange);
 //		
-//		when(kpiRepo.findByTimestampBetween(dateTimeLow, dateTimeHigh)).thenReturn(kpiInRange);
+//		when(nodeRepo.findByTimestampBetween(dateTimeLow, dateTimeHigh)).thenReturn(kpiInRange);
 //		
-//		assertEquals(kpiInRange, kpiRepo.findByTimestampBetween(dateTimeLow, dateTimeHigh));
+//		assertEquals(kpiInRange, nodeRepo.findByTimestampBetween(dateTimeLow, dateTimeHigh));
 //	}
 	
 	@Test
     void getKpiInTimeframe_WithData_Test() {
-        List<Kpi> kpiList = createKpiIterable();
+        List<NodeData> kpiList = createNodeIterable();
         LocalDateTime start = LocalDateTime.of(2023, 1, 1, 0, 0);
         LocalDateTime end = LocalDateTime.of(2023, 12, 31, 23, 59);
-        when(kpiRepo.findByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class))).thenReturn(kpiList);
+        when(nodeRepo.findByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class))).thenReturn(kpiList);
 
-        ResponseEntity<List<Kpi>> responseEntity = kc.getKpiInTimeframe(start, end);
+        ResponseEntity<List<NodeData>> responseEntity = nc.getNodeInTimeframe(start, end);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(kpiList, responseEntity.getBody());
-        verify(kpiRepo).findByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class));
+        verify(nodeRepo).findByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class));
     }
 
     @Test
     void getKpiInTimeframe_EmptyData_Test() {
-        when(kpiRepo.findByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class))).thenReturn(new ArrayList<>());
+        when(nodeRepo.findByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class))).thenReturn(new ArrayList<>());
         LocalDateTime start = LocalDateTime.of(2023, 1, 1, 0, 0);
         LocalDateTime end = LocalDateTime.of(2023, 12, 31, 23, 59);
-        ResponseEntity<List<Kpi>> responseEntity = kc.getKpiInTimeframe(start, end);
+        ResponseEntity<List<NodeData>> responseEntity = nc.getNodeInTimeframe(start, end);
 
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
         assertTrue(responseEntity.getBody().isEmpty());
-        verify(kpiRepo).findByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class));
+        verify(nodeRepo).findByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class));
     }
 
 	
     @Test
     void GetKpiByLatencyRange_WithData_Test() {
-        List<Kpi> kpiList = createKpiIterable();
+        List<NodeData> kpiList = createNodeIterable();
         
-        when(kpiRepo.findByLatencyBetween(anyDouble(), anyDouble())).thenReturn(kpiList);
+        when(nodeRepo.findByLatencyBetween(anyDouble(), anyDouble())).thenReturn(kpiList);
 
-        ResponseEntity<List<Kpi>> responseEntity = kc.getKpiByLatencyRange(0.0, 10.0);
+        ResponseEntity<List<NodeData>> responseEntity = nc.getNodesByLatencyRange(0.0, 10.0);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(kpiList, responseEntity.getBody());
-        verify(kpiRepo).findByLatencyBetween(anyDouble(), anyDouble());
+        verify(nodeRepo).findByLatencyBetween(anyDouble(), anyDouble());
     }
 
     @Test
     void GetKpiByLatencyRange_EmptyData_Test() {
-        when(kpiRepo.findByLatencyBetween(anyDouble(), anyDouble())).thenReturn(new ArrayList<>());
+        when(nodeRepo.findByLatencyBetween(anyDouble(), anyDouble())).thenReturn(new ArrayList<>());
 
-        ResponseEntity<List<Kpi>> responseEntity = kc.getKpiByLatencyRange(0.0, 10.0);
+        ResponseEntity<List<NodeData>> responseEntity = nc.getNodesByLatencyRange(0.0, 10.0);
 
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
         assertTrue(responseEntity.getBody().isEmpty());
-        verify(kpiRepo).findByLatencyBetween(anyDouble(), anyDouble());
+        verify(nodeRepo).findByLatencyBetween(anyDouble(), anyDouble());
     }
 
 	
 	@Test
     void getKpiByErrorRateRange_WithData_Test() {
-        List<Kpi> kpiList = createKpiIterable();
+        List<NodeData> kpiList = createNodeIterable();
         
-        when(kpiRepo.findByErrorRateBetween(anyDouble(), anyDouble())).thenReturn(kpiList);
+        when(nodeRepo.findByErrorRateBetween(anyDouble(), anyDouble())).thenReturn(kpiList);
 
-        ResponseEntity<List<Kpi>> responseEntity = kc.getKpiByErrorRateRange(0.0, 10.0);
+        ResponseEntity<List<NodeData>> responseEntity = nc.getNodesByErrorRateRange(0.0, 10.0);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(kpiList, responseEntity.getBody());
-        verify(kpiRepo).findByErrorRateBetween(anyDouble(), anyDouble());
+        verify(nodeRepo).findByErrorRateBetween(anyDouble(), anyDouble());
     }
 
     @Test
     void getKpiByErrorRateRange_EmptyData_Test() {
-        when(kpiRepo.findByErrorRateBetween(anyDouble(), anyDouble())).thenReturn(new ArrayList<>());
+        when(nodeRepo.findByErrorRateBetween(anyDouble(), anyDouble())).thenReturn(new ArrayList<>());
 
-        ResponseEntity<List<Kpi>> responseEntity = kc.getKpiByErrorRateRange(0.0, 10.0);
+        ResponseEntity<List<NodeData>> responseEntity = nc.getNodesByErrorRateRange(0.0, 10.0);
 
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
         assertTrue(responseEntity.getBody().isEmpty());
-        verify(kpiRepo).findByErrorRateBetween(anyDouble(), anyDouble());
+        verify(nodeRepo).findByErrorRateBetween(anyDouble(), anyDouble());
     }
 	
 	@Test
 	public void getKpiByThroughputRange_Test() {
-		List<Kpi> kpis = createKpiIterable();
-		List<Kpi> inRange = kpis.subList(2, kpis.size());
-		when(kpiRepo.findByThroughputBetween(0.02, 0.03)).thenReturn(inRange);
+		List<NodeData> kpis = createNodeIterable();
+		List<NodeData> inRange = kpis.subList(2, kpis.size());
+		when(nodeRepo.findByThroughputBetween(0.02, 0.03)).thenReturn(inRange);
 		
-		assertEquals(inRange, kpiRepo.findByThroughputBetween(0.02, 0.03));
+		assertEquals(inRange, nodeRepo.findByThroughputBetween(0.02, 0.03));
 	}
 	
 	@Test
 	 void getKpiByThroughputRange_WithData_Test() {
-        List<Kpi> kpiList = createKpiIterable();
+        List<NodeData> kpiList = createNodeIterable();
         
-        when(kpiRepo.findByThroughputBetween(anyDouble(), anyDouble())).thenReturn(kpiList);
+        when(nodeRepo.findByThroughputBetween(anyDouble(), anyDouble())).thenReturn(kpiList);
 
-        ResponseEntity<List<Kpi>> responseEntity = kc.getKpiByThroughputRange(0.0, 10.0);
+        ResponseEntity<List<NodeData>> responseEntity = nc.getNodesByThroughputRange(0.0, 10.0);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(kpiList, responseEntity.getBody());
-        verify(kpiRepo).findByThroughputBetween(anyDouble(), anyDouble());
+        verify(nodeRepo).findByThroughputBetween(anyDouble(), anyDouble());
     }
 
     @Test
     void getKpiByThroughputRange_EmptyData_Test() {
-        when(kpiRepo.findByThroughputBetween(anyDouble(), anyDouble())).thenReturn(new ArrayList<>());
+        when(nodeRepo.findByThroughputBetween(anyDouble(), anyDouble())).thenReturn(new ArrayList<>());
 
-        ResponseEntity<List<Kpi>> responseEntity = kc.getKpiByThroughputRange(0.0, 10.0);
+        ResponseEntity<List<NodeData>> responseEntity = nc.getNodesByThroughputRange(0.0, 10.0);
 
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
         assertTrue(responseEntity.getBody().isEmpty());
-        verify(kpiRepo).findByThroughputBetween(anyDouble(), anyDouble());
+        verify(nodeRepo).findByThroughputBetween(anyDouble(), anyDouble());
     }
 
-	public List<Kpi> createKpiIterable(){
+	public List<NodeData> createNodeIterable(){
 		LocalDateTime dateTime = LocalDateTime.of(2024, 5, 24, 10, 22, 22, 412000000);
-		Kpi kpi1 = new Kpi(1,100,20.3,180,0.018, dateTime);
-		Kpi kpi2 = new Kpi(2,200,18.5,210,0.033, dateTime);
-		Kpi kpi3 = new Kpi(3,300,19.1,195,0.02, dateTime);
+		NodeData nd1 = new NodeData(1,100,20.3,180,0.018, dateTime);
+		NodeData nd2 = new NodeData(2,200,18.5,210,0.033, dateTime);
+		NodeData nd3 = new NodeData(3,300,19.1,195,0.02, dateTime);
 
-		List<Kpi> kpis = new ArrayList<>();
-		kpis.add(kpi1);
-		kpis.add(kpi2);
-		kpis.add(kpi3);
+		List<NodeData> nodes = new ArrayList<>();
+		nodes.add(nd1);
+		nodes.add(nd2);
+		nodes.add(nd3);
 		
-		return kpis;
+		return nodes;
 	}
 }
