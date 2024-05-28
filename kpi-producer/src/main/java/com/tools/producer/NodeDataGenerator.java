@@ -35,8 +35,8 @@ public class NodeDataGenerator {
     }
 
     public void generateMetrics() {
-        int nodeId = random.nextInt(150) + 1; // Node ID range 1-150
-        int networkId = random.nextInt(15) + 1; // Network ID range 1-15
+        int nodeId = random.nextInt(100) + 1; // Node ID range 1-150
+        int networkId = random.nextInt(5) + 1; // Network ID range 1-15
 
         NodeData data = new NodeData(
                 nodeId, // nodeId

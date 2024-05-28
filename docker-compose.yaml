@@ -1,9 +1,7 @@
 services:
-
   #  --------- KAFKA -----------
   zookeeper:
-    image: 'bitnami/zookeeper:latest'
-    container_name: zookeeper        
+    image: 'bitnami/zookeeper:latest'   
     ports:
       - "2181:2181"
     environment:
@@ -11,7 +9,6 @@ services:
 
   kafka:
     image: 'bitnami/kafka:latest'
-    container_name: kafka
     ports:
       - "9092:9092"
       - "29092:29092"
@@ -25,12 +22,11 @@ services:
     healthcheck:
       test: ["CMD", "kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:9092"]
       timeout: 10s  
-      interval: 10s 
-      retries: 5
+      interval: 5s 
+      retries: 10
 
   kafka-ui:
     image: 'provectuslabs/kafka-ui:latest'
-    container_name: kafka-ui
     ports:
       - "8090:8080"
     environment:
@@ -42,29 +38,29 @@ services:
   mysql:
     image: mysql:latest
     container_name: mysql_db
+    restart: always
     environment:
       MYSQL_DATABASE: network_node_kpi
       MYSQL_USER: admin
       MYSQL_ROOT_PASSWORD: root
       MYSQL_PASSWORD: root
+      MYSQL_INITDB_SKIP_TZINFO: yes
     ports:
       - "3306:3306"
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 10s
-      interval: 10s
-      retries: 5
+      interval: 5s
+      retries: 10
     
   adminer:
     image: adminer
-    container_name: db_adminer
     ports:
       - 8085:8080
 
   #  --------- Consumer -----------
   kpi-consumer:
     image: omar0md/kpi-consumer
-    container_name: kpi-consumer
     build:
       context: ./kpi-consumer
     ports:
@@ -76,14 +72,13 @@ services:
         condition: service_healthy
     healthcheck:
       test: "wget --tries=1 -q -O - localhost:8080/actuator/health | grep UP || exit 1"
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      timeout: 10s
+      interval: 5s
+      retries: 10
 
   #  --------- Producer -----------
   kpi-producer:
     image: omar0md/kpi-producer
-    container_name: kpi-producer
     build:
       context: ./kpi-producer
     ports:
@@ -92,9 +87,9 @@ services:
       kpi-consumer:
         condition: service_healthy
 
+  #  --------- Dashboard -----------
   kpi-dashboard:
     image: omar0md/kpi-dashboard
-    container_name: kpi-dashboard
     build:
       context: ./kpi-dashboard
     ports:
@@ -102,3 +97,10 @@ services:
     depends_on:
       kpi-consumer:
         condition: service_healthy
+
+  #  --------- Grafana (Dashboard UI) -----------
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+  
