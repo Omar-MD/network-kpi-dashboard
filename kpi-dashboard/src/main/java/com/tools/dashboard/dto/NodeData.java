@@ -17,26 +17,29 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 @Entity
 @Table(name = "node_data")
 public class NodeData {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	private Long id;
+
 	private int nodeId;
 	private int networkId;
-	
+
 	private double latency;
 	private double throughput;
 	private double errorRate;
-	
+
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime timestamp;
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+	private LocalDateTime timestamp;
 
 	public NodeData() {
 		super();
 	}
 
-	public NodeData(int nodeId, int networkId, double latency, double throughput, double error_rate, LocalDateTime timestamp) {
+	public NodeData(int nodeId, int networkId, double latency, double throughput, double error_rate,
+			LocalDateTime timestamp) {
 		super();
 		this.nodeId = nodeId;
 		this.networkId = networkId;
@@ -70,8 +73,6 @@ public class NodeData {
 		this.timestamp = timestamp;
 	}
 
-	
-	
 	public Long getId() {
 		return id;
 	}
@@ -101,14 +102,14 @@ public class NodeData {
 	}
 
 	@Override
-    public String toString() {
-        return "NodeData{" +
-                "nodeId=" + nodeId +
-                ", networkId=" + networkId +
-                ", latency=" + latency +
-                ", throughput=" + throughput +
-                ", errorRate=" + errorRate +
-                ", timestamp=" + timestamp +
-                '}';
-    }
+	public String toString() {
+		return "NodeData{" +
+				"nodeId=" + nodeId +
+				", networkId=" + networkId +
+				", latency=" + latency +
+				", throughput=" + throughput +
+				", errorRate=" + errorRate +
+				", timestamp=" + timestamp +
+				'}';
+	}
 }
