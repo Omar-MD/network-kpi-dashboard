@@ -20,12 +20,6 @@ jenkins_home/
 sonarqube_conf/
 sonarqube_data/
 
-# But not these specific configuration files and directories
-!sonarqube_conf/sonar.properties
-!sonarqube_conf/users.properties
-!sonarqube_conf/security/
-!sonarqube_conf/security/**/*
-
 # AWS User-specific
 .idea/**/aws.xml
 
