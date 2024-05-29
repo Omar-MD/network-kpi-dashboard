@@ -22,7 +22,6 @@ public class NodeData {
 	Long id;
 	private int nodeId;
 	private int networkId;
-	
 	private double latency;
 	private double throughput;
 	private double errorRate;
