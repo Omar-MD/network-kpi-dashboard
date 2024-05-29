@@ -70,11 +70,7 @@ pipeline {
       }
     }
 
-    // stage('Push Docker Images') {
-    //   steps {
-    //       sh './mvnw dockerfile:build --projects=kpi-consumer,kpi-producer,kpi-dashboard'
-    //   }
-    // }
+
   }
 
   post {

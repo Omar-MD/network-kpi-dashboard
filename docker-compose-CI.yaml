@@ -1,7 +1,7 @@
 services:
   jenkins:
     image: jenkins/jenkins:lts-jdk11
-    user: root 
+    privileged: true
     environment:
       - SONARQUBE_URL=http://sonarqube:9000
       - JAVA_OPTS=-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true
@@ -15,10 +15,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - jenkins-sonar-network
-    command: >
-      sh -c "usermod -aG docker jenkins &&
-             chown jenkins:docker /var/run/docker.sock &&
-             /usr/local/bin/jenkins.sh"
   
   sonarqube:
     image: sonarqube:9-community
