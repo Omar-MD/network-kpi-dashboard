@@ -20,8 +20,6 @@ jenkins_home/*
 !jenkins_home/config.xml
 !jenkins_home/secrets/
 !jenkins_home/secrets/**/*
-!jenkins_home/plugins/
-!jenkins_home/plugins/**/*
 
 # Ignore everything in sonarqube_conf and sonarqube_data
 sonarqube_conf/*
