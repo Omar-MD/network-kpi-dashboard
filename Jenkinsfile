@@ -65,7 +65,6 @@ pipeline {
     stage('Start Containers') {
       steps {
         script {
-            // Assuming you have a docker-compose.yml file to start your containers
             sh 'docker compose up -d'
         }
       }
