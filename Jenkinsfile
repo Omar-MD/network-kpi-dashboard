@@ -1,4 +1,5 @@
-/* groovylint-disable CompileStatic, DuplicateStringLiteral */
+import org.sonarsource.scanner.jenkins.pipeline.WaitForQualityGate
+
 pipeline {
   agent any
 
@@ -48,9 +49,9 @@ pipeline {
     stage('Quality Gate Check') {
       steps {
         script {
-          def waitForQualityGateStep = waitForQualityGate()
-          if (waitForQualityGate.status != 'OK') {
-            error "Pipeline aborted due to quality gate failure: ${waitForQualityGate.status}"
+          def qg = waitForQualityGate()
+          if (qg.status != 'OK') {
+              error "Pipeline aborted due to quality gate failure: ${qg.status}"
           }
         }
       }
