@@ -19,7 +19,7 @@ adminer DB view: http://localhost:8085/
 
 Kafka UI: http://localhost:8090/
 Grafana UI: http:localhost:3000/
-- dashboard: https://snapshots.raintank.io/dashboard/snapshot/Q2XoUlynukY7kIPvyTfAWXn1lwBoc9pp
+- dashboard: https://snapshots.raintank.io/dashboard/snapshot/jlRD3zDfB11lYbANnYwWJfrT3yGfQtPc
 
 4- To see the logs of  a service
 `# docker logs {service container name} Ex. docker logs mysql_db`
