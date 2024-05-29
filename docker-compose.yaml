@@ -22,7 +22,7 @@ services:
     healthcheck:
       test: ["CMD", "kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:9092"]
       timeout: 10s  
-      interval: 5s 
+      interval: 10s 
       retries: 10
 
   kafka-ui:
@@ -50,7 +50,7 @@ services:
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 10s
-      interval: 5s
+      interval: 10s
       retries: 10
     
   adminer:
@@ -73,7 +73,7 @@ services:
     healthcheck:
       test: "wget --tries=1 -q -O - localhost:8080/actuator/health | grep UP || exit 1"
       timeout: 10s
-      interval: 5s
+      interval: 10s
       retries: 10
 
   #  --------- Producer -----------
@@ -103,3 +103,9 @@ services:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+volumes:
+  grafana_data:
+    driver: local
