@@ -15,6 +15,7 @@
 
 # Ignore everything in jenkins_home
 jenkins_home/
+example_tests/
 
 # Ignore everything in sonarqube_conf and sonarqube_data
 sonarqube_conf/

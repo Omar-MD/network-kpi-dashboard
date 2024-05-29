@@ -35,6 +35,7 @@ pipeline {
           sh "${SCANNER_HOME}/bin/sonar-scanner \
               -Dsonar.projectKey=network-kpi-dashboard \
               -Dsonar.sources=. \
+              -Dsonar.exclusions=**/*.js,**/*.html,**/*.css \
               -Dsonar.host.url=${SONARQUBE_URL} \
               -Dsonar.token=${SONARQUBE_TOKEN} \
               -Dsonar.java.binaries=kpi-consumer/target/classes,kpi-producer/target/classes,kpi-dashboard/target/classes \
@@ -65,7 +66,7 @@ pipeline {
       steps {
         script {
             // Assuming you have a docker-compose.yml file to start your containers
-            sh 'docker-compose up -d'
+            sh 'docker compose up -d'
         }
       }
     }
@@ -100,7 +101,7 @@ pipeline {
     always {
       // Stop and remove the Docker containers
       script {
-          sh 'docker-compose down'
+          sh 'docker compose down'
       }
       // Clean workspace
       cleanWs()
