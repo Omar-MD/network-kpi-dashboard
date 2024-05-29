@@ -1,5 +1,3 @@
-import org.sonarsource.scanner.jenkins.pipeline.WaitForQualityGate
-
 pipeline {
   agent any
 
