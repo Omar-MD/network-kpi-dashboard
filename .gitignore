@@ -14,15 +14,10 @@
 .settings/
 
 # Ignore everything in jenkins_home
-jenkins_home/*
-
-# But not these files and directories
-!jenkins_home/config.xml
-!jenkins_home/secrets/
-!jenkins_home/secrets/**/*
+jenkins_home/
 
 # Ignore everything in sonarqube_conf and sonarqube_data
-sonarqube_conf/*
+sonarqube_conf/
 sonarqube_data/
 
 # But not these specific configuration files and directories
