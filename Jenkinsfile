@@ -10,6 +10,15 @@ pipeline {
   }
 
   stages {
+
+    stage('Docker Test') {
+      steps {
+        script {
+            sh 'docker ps'
+        }
+      }
+    }
+      
     stage('Checkout') {
       steps {
         // Checkout code from the mounted workspace
