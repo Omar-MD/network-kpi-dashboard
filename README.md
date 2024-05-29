@@ -19,7 +19,8 @@ adminer DB view: http://localhost:8085/
 
 Kafka UI: http://localhost:8090/
 Grafana UI: http:localhost:3000/
-- dashboard: https://snapshots.raintank.io/dashboard/snapshot/jlRD3zDfB11lYbANnYwWJfrT3yGfQtPc
+- dashboard: Go to new dahsboard and select the import option and either copy and paste the contents of the JSON file or directly select.
+
 
 4- To see the logs of  a service
 `# docker logs {service container name} Ex. docker logs mysql_db`
