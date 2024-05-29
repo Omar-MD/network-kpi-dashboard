@@ -10,15 +10,6 @@ pipeline {
   }
 
   stages {
-
-    stage('Docker Test') {
-      steps {
-        script {
-            sh 'docker ps'
-        }
-      }
-    }
-      
     stage('Checkout') {
       steps {
         // Checkout code from the mounted workspace
@@ -32,7 +23,7 @@ pipeline {
       }
     }
 
-    stage('Test') {
+    stage('Unit Tests') {
       steps {
         sh './mvnw test'
       }
@@ -64,18 +55,55 @@ pipeline {
       }
     }
 
-    stage('Build Docker Image') {
+    stage('Build Images') {
       steps {
           sh './mvnw dockerfile:build --projects=kpi-consumer,kpi-producer,kpi-dashboard'
       }
     }
 
+    stage('Start Containers') {
+      steps {
+        script {
+            // Assuming you have a docker-compose.yml file to start your containers
+            sh 'docker-compose up -d'
+        }
+      }
+    }
 
+    stage('End-to-End Testing') {
+      steps {
+          script {
+            sh 'sleep 120'
+            def curlOutput = sh(script: 'curl -s localhost:8081/kpi', returnStdout: true).trim()
+            if (curlOutput.isEmpty()) {
+              error "Curl command returned an empty response."
+            } else {
+              echo "Curl output: ${curlOutput}"
+            }
+          }
+      }
+    }
+
+    stage('Push Images to Docker Hub') {
+      when {
+        expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+      }
+      steps {
+        script {
+          sh 'echo "Hello World!'
+        }
+      }
+    }
   }
 
   post {
     always {
-        cleanWs()
+      // Stop and remove the Docker containers
+      script {
+          sh 'docker-compose down'
+      }
+      // Clean workspace
+      cleanWs()
     }
-}
+  }
 }

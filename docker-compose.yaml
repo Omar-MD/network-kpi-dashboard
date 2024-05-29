@@ -48,10 +48,11 @@ services:
     ports:
       - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: ["CMD-SHELL", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 10s
       interval: 10s
       retries: 10
+      start_period: 60s
     
   adminer:
     image: adminer
@@ -75,6 +76,7 @@ services:
       timeout: 10s
       interval: 10s
       retries: 10
+      start_period: 30s
 
   #  --------- Producer -----------
   kpi-producer:
