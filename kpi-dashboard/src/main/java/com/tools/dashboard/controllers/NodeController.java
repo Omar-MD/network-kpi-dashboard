@@ -291,4 +291,33 @@ public class NodeController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Or return ResponseEntity.noContent().build();
 		}
 	}
+	@RequestMapping("/kpi/node_highest_throughput")
+    public ResponseEntity<List<Object[]>> getNodeWithHighestThroughput() {
+        List<Object[]> result = nodeRepo.findNodeWithHighestThroughput();
+        if (!result.isEmpty()) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @RequestMapping("/kpi/node_highest_latency")
+    public ResponseEntity<List<Object[]>> getNodeWithHighestLatency() {
+        List<Object[]> result = nodeRepo.findNodeWithHighestLatency();
+        if (!result.isEmpty()) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @RequestMapping("/kpi/node_highest_error_rate")
+    public ResponseEntity<List<Object[]>> getNodeWithHighestErrorRate() {
+        List<Object[]> result = nodeRepo.findNodeWithHighestErrorRate();
+        if (!result.isEmpty()) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }

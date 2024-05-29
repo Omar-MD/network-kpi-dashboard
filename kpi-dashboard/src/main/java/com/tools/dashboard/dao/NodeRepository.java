@@ -70,6 +70,14 @@ public interface NodeRepository extends JpaRepository<NodeData, Long>{
     @Query("SELECT nd.networkId, avg(nd.throughput) from NodeData nd GROUP BY nd.networkId")
     List<Object[]> findAvgThroughputPerNetwork();
 
+    @Query(value = "SELECT node_id, MAX(throughput) AS highest_throughput FROM node_data GROUP BY node_id ORDER BY highest_throughput DESC LIMIT 1", nativeQuery = true)
+    List<Object[]> findNodeWithHighestThroughput();
+
+    @Query(value = "SELECT node_id, MAX(latency) AS highest_latency FROM node_data GROUP BY node_id ORDER BY highest_latency DESC LIMIT 1", nativeQuery = true)
+    List<Object[]> findNodeWithHighestLatency();
+
+    @Query(value = "SELECT node_id, MAX(error_rate) AS highest_error_rate FROM node_data GROUP BY node_id ORDER BY highest_error_rate DESC LIMIT 1", nativeQuery = true)
+    List<Object[]> findNodeWithHighestErrorRate();
     //heatmaps
     //Mean LAtency
     //Mean Error Rate
