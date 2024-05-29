@@ -13,26 +13,10 @@ services:
     volumes:
       - ./jenkins_home:/var/jenkins_home
       - .:/network-kpi-dashboard
-      - /var/run/docker.sock:/var/run/docker.sock
+      -  /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - jenkins-sonar-network
-    command: >
-      bash -c '
-      for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do
-        apt-get remove -y $pkg;
-      done &&
-      apt-get update &&
-      apt-get install -y \
-        ca-certificates \
-        curl &&
-      install -m 0755 -d /etc/apt/keyrings &&
-      curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&
-      chmod a+r /etc/apt/keyrings/docker.asc &&
-      echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null &&
-      apt-get update &&
-      apt-get install -y docker-ce-cli docker-compose &&
-      exec java -jar /usr/share/jenkins/jenkins.war'
-  
+
   sonarqube:
     image: sonarqube:9-community
     environment:
