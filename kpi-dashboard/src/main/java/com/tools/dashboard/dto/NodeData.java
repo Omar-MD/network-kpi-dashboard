@@ -35,13 +35,13 @@ public class NodeData {
 		super();
 	}
 
-	public NodeData(int nodeId, int networkId, double latency, double throughput, double error_rate, LocalDateTime timestamp) {
+	public NodeData(int nodeId, int networkId, double latency, double throughput, double errorRate, LocalDateTime timestamp) {
 		super();
 		this.nodeId = nodeId;
 		this.networkId = networkId;
 		this.latency = latency;
 		this.throughput = throughput;
-		this.errorRate = error_rate;
+		this.errorRate = errorRate;
 		this.timestamp = timestamp;
 	}
 
@@ -69,8 +69,6 @@ public class NodeData {
 		this.timestamp = timestamp;
 	}
 
-	
-	
 	public Long getId() {
 		return id;
 	}

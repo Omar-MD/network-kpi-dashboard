@@ -1,7 +1,6 @@
 package com.tools.dashboard.controllers;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,46 +20,41 @@ public class NodeController {
 	@Autowired
 	NodeRepository nodeRepo;
 	
-//	@GetMapping
-//	public String index() {
-//		return "<h1>NodeData Dashboard</h1>";
-//	}
-	
 	@GetMapping("/kpi")
 	public Iterable<NodeData> getAllNodes(){
 		return nodeRepo.findAll();
 	}
 	
-	@RequestMapping("/kpi/{id}")
+	@GetMapping("/kpi/{id}")
 	public Optional<NodeData> getNodeById(@PathVariable("id") Long id){
 		Optional<NodeData> node = nodeRepo.findById(id);
 		if(node.isPresent()) {
 			return node;
 		}
 		else {
-			throw new NodeNotFoundException("No NodeData with id "+id+" found");
+			throw new NodeNotFoundException("No NodeData with id "+id);
 		}
 	}
 	
-	@RequestMapping("/kpi/node_id_entries/{node_id}")
-	public Optional<List<NodeData>> getEntriesForNodeId(@PathVariable("node_id") int node_id){
-		Optional<List<NodeData>> entries = nodeRepo.findByNodeId(node_id);
+	@GetMapping("/kpi/node_id_entries/{node_id}")
+	public Optional<List<NodeData>> getEntriesForNodeId(@PathVariable("node_id") int nodeId){
+		Optional<List<NodeData>> entries = nodeRepo.findByNodeId(nodeId);
 		if(entries.isPresent()) {
 			return entries;
 		}
 		else {
-			throw new NodeNotFoundException("No entries with node id "+node_id+" found");
+			throw new NodeNotFoundException("No entries found for node id "+nodeId);
 		}
 	}
 	
-	@RequestMapping("/kpi/network_id_entries/{net_id}")
-	public Optional<List<NodeData>> getEntriesForNetworkId(@PathVariable("net_id") int net_id){
-		Optional<List<NodeData>> entries = nodeRepo.findByNetworkId(net_id);
+	@GetMapping("/kpi/network_id_entries/{net_id}")
+	public Optional<List<NodeData>> getEntriesForNetworkId(@PathVariable("net_id") int netId){
+		Optional<List<NodeData>> entries = nodeRepo.findByNetworkId(netId);
 		if(entries.isPresent()) {
 			return entries;
 		}
 		else {
-			throw new NodeNotFoundException("No entries with node id "+net_id+" found");
+			throw new NodeNotFoundException("No entries with node id "+netId+" found");
 		}
 	}
 	
@@ -89,189 +83,175 @@ public class NodeController {
 		}
 	}
 	
-	@RequestMapping("/kpi/time_range")
+	@GetMapping("/kpi/time_range")
 	public ResponseEntity<List<NodeData>> getNodeInTimeframe(@RequestParam LocalDateTime start, @RequestParam LocalDateTime end){
-		List<NodeData> nodeInTimeframe = new ArrayList<>();
-		nodeInTimeframe = nodeRepo.findByTimestampBetween(start, end);
+		List<NodeData> nodeInTimeframe = nodeRepo.findByTimestampBetween(start, end);
 		
-		if(nodeInTimeframe.size() > 0) {
-			return new ResponseEntity<List<NodeData>>(nodeInTimeframe, HttpStatus.OK);
+		if(!nodeInTimeframe.isEmpty()) {
+			return new ResponseEntity<>(nodeInTimeframe, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<NodeData>>(nodeInTimeframe, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(nodeInTimeframe, HttpStatus.NO_CONTENT);
 		}
 	}
 	
-	@RequestMapping("/kpi/latency_range")
+	@GetMapping("/kpi/latency_range")
 	public ResponseEntity<List<NodeData>> getNodesByLatencyRange(@RequestParam double low, @RequestParam double high){
-		List<NodeData> nodeInLatencyRange = new ArrayList<>();
-		nodeInLatencyRange = nodeRepo.findByLatencyBetween(low, high);
+		List<NodeData> nodeInLatencyRange = nodeRepo.findByLatencyBetween(low, high);
 		
-		if(nodeInLatencyRange.size() > 0) {
-			return new ResponseEntity<List<NodeData>>(nodeInLatencyRange, HttpStatus.OK);
+		if(!nodeInLatencyRange.isEmpty()) {
+			return new ResponseEntity<>(nodeInLatencyRange, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<NodeData>>(nodeInLatencyRange, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(nodeInLatencyRange, HttpStatus.NO_CONTENT);
 		}
 	}
 	
-	@RequestMapping("/kpi/error_range")
+	@GetMapping("/kpi/error_range")
 	public ResponseEntity<List<NodeData>> getNodesByErrorRateRange(@RequestParam double low, @RequestParam double high){
-		List<NodeData> nodeInErrorRateRange = new ArrayList<>();
-		nodeInErrorRateRange = nodeRepo.findByErrorRateBetween(low, high);
+		List<NodeData> nodeInErrorRateRange = nodeRepo.findByErrorRateBetween(low, high);
 		
-		if(nodeInErrorRateRange.size() > 0) {
-			return new ResponseEntity<List<NodeData>>(nodeInErrorRateRange, HttpStatus.OK);
+		if(!nodeInErrorRateRange.isEmpty()) {
+			return new ResponseEntity<>(nodeInErrorRateRange, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<NodeData>>(nodeInErrorRateRange, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(nodeInErrorRateRange, HttpStatus.NO_CONTENT);
 		}
 	}
 
-	@RequestMapping("/kpi/throughput_range")
+	@GetMapping("/kpi/throughput_range")
 	public ResponseEntity<List<NodeData>> getNodesByThroughputRange(@RequestParam double low, @RequestParam double high){
-		List<NodeData> nodeInThroughputRange = new ArrayList<>();
-		nodeInThroughputRange = nodeRepo.findByThroughputBetween(low, high);
+		List<NodeData> nodeInThroughputRange = nodeRepo.findByThroughputBetween(low, high);
 		
-		if(nodeInThroughputRange.size() > 0) {
-			return new ResponseEntity<List<NodeData>>(nodeInThroughputRange, HttpStatus.OK);
+		if(!nodeInThroughputRange.isEmpty()) {
+			return new ResponseEntity<>(nodeInThroughputRange, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<NodeData>>(nodeInThroughputRange, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(nodeInThroughputRange, HttpStatus.NO_CONTENT);
 		}
 	}
 	
-	@RequestMapping("/kpi/latency_over_time")
+	@GetMapping("/kpi/latency_over_time")
 	public ResponseEntity<List<Object[]>> getAllLatencyTimestamps(){
-		List<Object[]> latencyTimestamps = new ArrayList<>();
-		latencyTimestamps = nodeRepo.findLatencyTimestamps();
+		List<Object[]> latencyTimestamps = nodeRepo.findLatencyTimestamps();
 		
-		if(latencyTimestamps.size() > 0) {
-			return new ResponseEntity<List<Object[]>>(latencyTimestamps, HttpStatus.OK);
+		if(!latencyTimestamps.isEmpty()) {
+			return new ResponseEntity<>(latencyTimestamps, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<Object[]>>(latencyTimestamps, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(latencyTimestamps, HttpStatus.NO_CONTENT);
 		}
 	}
 	
-	@RequestMapping("/kpi/error_rate_over_time")
+	@GetMapping("/kpi/error_rate_over_time")
 	public ResponseEntity<List<Object[]>> getAllErrorRateTimestamps(){
-		List<Object[]> errorRateTimestamps = new ArrayList<>();
-		errorRateTimestamps = nodeRepo.findErrorRateTimestamps();
+		List<Object[]> errorRateTimestamps = nodeRepo.findErrorRateTimestamps();
 
-		if(errorRateTimestamps.size() > 0) {
-			return new ResponseEntity<List<Object[]>>(errorRateTimestamps, HttpStatus.OK);
+		if(!errorRateTimestamps.isEmpty()) {
+			return new ResponseEntity<>(errorRateTimestamps, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<Object[]>>(errorRateTimestamps, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(errorRateTimestamps, HttpStatus.NO_CONTENT);
 		}
 	}
 	
-	@RequestMapping("/kpi/throughput_over_time")
+	@GetMapping("/kpi/throughput_over_time")
 	public ResponseEntity<List<Object[]>> getAllThroughputTimestamps(){
-		List<Object[]> throughputTimestamps = new ArrayList<>();
-		throughputTimestamps = nodeRepo.findThroughputTimestamps();
+		List<Object[]> throughputTimestamps = nodeRepo.findThroughputTimestamps();
 
-		if(throughputTimestamps.size() > 0) {
-			return new ResponseEntity<List<Object[]>>(throughputTimestamps, HttpStatus.OK);
+		if(!throughputTimestamps.isEmpty()) {
+			return new ResponseEntity<>(throughputTimestamps, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<Object[]>>(throughputTimestamps, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(throughputTimestamps, HttpStatus.NO_CONTENT);
 		}
 	}
 	
-	@RequestMapping("/kpi/latency_error_rate_throughput")
+	@GetMapping("/kpi/latency_error_rate_throughput")
 	public ResponseEntity<List<Object[]>> getLatencyErrorRateThroughput(){
-		List<Object[]> l_er_t = new ArrayList<>();
-		l_er_t = nodeRepo.findAllLatencyErrorRateThroughput();	
+		List<Object[]> latencyErrorThroughput = nodeRepo.findAllLatencyErrorRateThroughput();	
 		
-		if(l_er_t.size() > 0) {
-			return new ResponseEntity<List<Object[]>>(l_er_t, HttpStatus.OK);
+		if(!latencyErrorThroughput.isEmpty()) {
+			return new ResponseEntity<>(latencyErrorThroughput, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<Object[]>>(l_er_t, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(latencyErrorThroughput, HttpStatus.NO_CONTENT);
 		}
 	}
 	
-	@RequestMapping("/kpi/error_vs_throughput")
+	@GetMapping("/kpi/error_vs_throughput")
 	public ResponseEntity<List<Object[]>> getErrorRateVsThroughput(){
-		List<Object[]> errorrate_vs_throughput = new ArrayList<>();
-		errorrate_vs_throughput = nodeRepo.findErrorVsThroughput();
+		List<Object[]> errorrateVSthroughput = nodeRepo.findErrorVsThroughput();
 		
-		if(errorrate_vs_throughput.size() > 0) {
-			return new ResponseEntity<List<Object[]>>(errorrate_vs_throughput, HttpStatus.OK);
+		if(!errorrateVSthroughput.isEmpty()) {
+			return new ResponseEntity<>(errorrateVSthroughput, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<Object[]>>(errorrate_vs_throughput, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(errorrateVSthroughput, HttpStatus.NO_CONTENT);
 		}
 	}
 	
-	@RequestMapping("/kpi/latency_vs_throughput")
+	@GetMapping("/kpi/latency_vs_throughput")
 	public ResponseEntity<List<Object[]>> getLatencyVsThroughput(){
-		List<Object[]> latency_vs_throughput = new ArrayList<>();
-		latency_vs_throughput = nodeRepo.findLatencyVsThroughput();
+		List<Object[]> latencyVSthroughput = nodeRepo.findLatencyVsThroughput();
 		
-		if(latency_vs_throughput.size() > 0) {
-			return new ResponseEntity<List<Object[]>>(latency_vs_throughput, HttpStatus.OK);
+		if(!latencyVSthroughput.isEmpty()) {
+			return new ResponseEntity<>(latencyVSthroughput, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<Object[]>>(latency_vs_throughput, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(latencyVSthroughput, HttpStatus.NO_CONTENT);
 		}
 	}
 	
-	@RequestMapping("/kpi/top_ten_latency")
-	public ResponseEntity<List<NodeData>> getTopTenNodes_Latency(){
-		List<NodeData> top10_latency = new ArrayList<>();
-		top10_latency = nodeRepo.findTop10Nodes_Latency();
+	@GetMapping("/kpi/top_ten_latency")
+	public ResponseEntity<List<NodeData>> getTopTenNodesLatency(){
+		List<NodeData> top10Latency = nodeRepo.findTop10Nodes_Latency();
 		
-		if(top10_latency.size() > 0) {
-			return new ResponseEntity<List<NodeData>>(top10_latency, HttpStatus.OK);
+		if(!top10Latency.isEmpty()) {
+			return new ResponseEntity<>(top10Latency, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<NodeData>>(top10_latency, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(top10Latency, HttpStatus.NO_CONTENT);
 		}
 	}
 	
-	@RequestMapping("/kpi/avg_latency_per_network")
+	@GetMapping("/kpi/avg_latency_per_network")
 	public ResponseEntity<List<Object[]>> getAvgLatencyPerNetwork(){
-		List<Object[]> avg_latency_per_network = new ArrayList<>();
-		avg_latency_per_network = nodeRepo.findAvgLatencyPerNetwork();
+		List<Object[]> avgLatencyPerNetwork = nodeRepo.findAvgLatencyPerNetwork();
 		
-		if(avg_latency_per_network.size() > 0) {
-			return new ResponseEntity<List<Object[]>>(avg_latency_per_network, HttpStatus.OK);
+		if(!avgLatencyPerNetwork.isEmpty()) {
+			return new ResponseEntity<>(avgLatencyPerNetwork, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<Object[]>>(avg_latency_per_network, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(avgLatencyPerNetwork, HttpStatus.NO_CONTENT);
 		}
 	}
 	
-	@RequestMapping("/kpi/avg_error_rate_per_network")
+	@GetMapping("/kpi/avg_error_rate_per_network")
 	public ResponseEntity<List<Object[]>> getAvgErrorRatePerNetwork(){
-		List<Object[]> avg_error_rate_per_network = new ArrayList<>();
-		avg_error_rate_per_network = nodeRepo.findAvgErrorPerNetwork();
+		List<Object[]> avgErrorRatePerNetwork = nodeRepo.findAvgErrorPerNetwork();
 		
-		if(avg_error_rate_per_network.size() > 0) {
-			return new ResponseEntity<List<Object[]>>(avg_error_rate_per_network, HttpStatus.OK);
+		if(!avgErrorRatePerNetwork.isEmpty()) {
+			return new ResponseEntity<>(avgErrorRatePerNetwork, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<Object[]>>(avg_error_rate_per_network, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(avgErrorRatePerNetwork, HttpStatus.NO_CONTENT);
 		}
 	}
 	
-	@RequestMapping("/kpi/avg_throughput_per_network")
+	@GetMapping("/kpi/avg_throughput_per_network")
 	public ResponseEntity<List<Object[]>> getAvgThroughputPerNetwork(){
-		List<Object[]> avg_throughput_per_network = new ArrayList<>();
-		avg_throughput_per_network = nodeRepo.findAvgThroughputPerNetwork();
+		List<Object[]> avgThroughputPerNetwork = nodeRepo.findAvgThroughputPerNetwork();
 		
-		if(avg_throughput_per_network.size() > 0) {
-			return new ResponseEntity<List<Object[]>>(avg_throughput_per_network, HttpStatus.OK);
+		if(!avgThroughputPerNetwork.isEmpty()) {
+			return new ResponseEntity<>(avgThroughputPerNetwork, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<List<Object[]>>(avg_throughput_per_network, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(avgThroughputPerNetwork, HttpStatus.NO_CONTENT);
 		}
 	}
 
-	@RequestMapping("/kpi/average_metrics")
+	@GetMapping("/kpi/average_metrics")
 	public ResponseEntity<List<Object[]>> getAverageMetrics() {
 		List<Object[]> averagesList = nodeRepo.findAverageMetrics();
 		if (averagesList != null && !averagesList.isEmpty()) {
@@ -282,16 +262,16 @@ public class NodeController {
 	}
 
 
-	@RequestMapping("kpi/node_highest_metrics")
+	@GetMapping("kpi/node_highest_metrics")
 	public ResponseEntity<List<Object[]>> getNodeWithHighestMetrics() {
 		List<Object[]> result = nodeRepo.findNodeWithHighestMetrics();
 		if (!result.isEmpty()) {
 			return ResponseEntity.ok(result);
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Or return ResponseEntity.noContent().build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 	}
-	@RequestMapping("/kpi/node_highest_throughput")
+	@GetMapping("/kpi/node_highest_throughput")
     public ResponseEntity<List<Object[]>> getNodeWithHighestThroughput() {
         List<Object[]> result = nodeRepo.findNodeWithHighestThroughput();
         if (!result.isEmpty()) {
@@ -301,7 +281,7 @@ public class NodeController {
         }
     }
 
-    @RequestMapping("/kpi/node_highest_latency")
+    @GetMapping("/kpi/node_highest_latency")
     public ResponseEntity<List<Object[]>> getNodeWithHighestLatency() {
         List<Object[]> result = nodeRepo.findNodeWithHighestLatency();
         if (!result.isEmpty()) {
@@ -311,7 +291,7 @@ public class NodeController {
         }
     }
 
-    @RequestMapping("/kpi/node_highest_error_rate")
+    @GetMapping("/kpi/node_highest_error_rate")
     public ResponseEntity<List<Object[]>> getNodeWithHighestErrorRate() {
         List<Object[]> result = nodeRepo.findNodeWithHighestErrorRate();
         if (!result.isEmpty()) {

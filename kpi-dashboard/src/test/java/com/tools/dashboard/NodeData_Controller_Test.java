@@ -28,7 +28,7 @@ import com.tools.dashboard.dao.NodeRepository;
 import com.tools.dashboard.dto.NodeData;
 import com.tools.dashboard.exceptions.NodeNotFoundException;
 
-public class NodeData_Controller_Test {
+class NodeData_Controller_Test {
 	@Mock
 	private NodeRepository nodeRepo;
 	
@@ -36,12 +36,12 @@ public class NodeData_Controller_Test {
 	private NodeController nc;
 	
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		MockitoAnnotations.openMocks(this);
 	}
 	
 	@Test
-	public void getAllNodes_Test() {
+	void getAllNodes_Test() {
 		List<NodeData> nodeList = createNodeIterable();
 		when(nodeRepo.findAll()).thenReturn(nodeList);
 		
@@ -50,7 +50,7 @@ public class NodeData_Controller_Test {
 	}
 	
 	@Test
-	public void getNodeById_Test() {
+	void getNodeById_Test() {
 		LocalDateTime dateTime = LocalDateTime.of(2024, 5, 24, 10, 22, 22, 412000000);
 		NodeData node1 = new NodeData(1,100,20.3,180,0.02, dateTime);
 		when(nodeRepo.findById(node1.getId())).thenReturn(Optional.of(node1));
@@ -61,7 +61,7 @@ public class NodeData_Controller_Test {
 	}
 	
 	@Test
-	public void getNodeById_IdNotFound_Test() {
+	void getNodeById_IdNotFound_Test() {
 		when(nodeRepo.findById(999L)).thenReturn(Optional.empty());
 		
 		assertThrows(NodeNotFoundException.class, () ->{
@@ -70,7 +70,7 @@ public class NodeData_Controller_Test {
 	}
 
 	@Test
-	public void getEntriesForNodeId_Test() {
+	void getEntriesForNodeId_Test() {
 		LocalDateTime dateTime = LocalDateTime.of(2024, 5, 24, 10, 22, 22, 412000000);
 		NodeData node1 = new NodeData(1,100,20.3,180,0.02, dateTime);
 		Optional<List<NodeData>> nodes = Optional.of(createNodeIterable());
@@ -81,7 +81,7 @@ public class NodeData_Controller_Test {
 	}
 	
 	@Test
-	public void getEntriesForNodeId_IdNotFound_Test() {
+	void getEntriesForNodeId_IdNotFound_Test() {
 	    when(nodeRepo.findByNodeId(999)).thenReturn(Optional.empty());
 
 	    assertThrows(NodeNotFoundException.class, () -> {
@@ -90,7 +90,7 @@ public class NodeData_Controller_Test {
 	}
 
 	@Test
-	public void getEntriesForNetworkId_Test() {
+	void getEntriesForNetworkId_Test() {
 		LocalDateTime dateTime = LocalDateTime.of(2024, 5, 24, 10, 22, 22, 412000000);
 		NodeData node1 = new NodeData(1,100,20.3,180,0.02, dateTime);
 		Optional<List<NodeData>> nodes = Optional.of(createNodeIterable());
@@ -101,7 +101,7 @@ public class NodeData_Controller_Test {
 	}
 	
 	@Test
-	public void getEntriesForNetworkId_IdNotFound_Test() {
+	void getEntriesForNetworkId_IdNotFound_Test() {
 	    when(nodeRepo.findByNetworkId(999)).thenReturn(Optional.empty());
 
 	    assertThrows(NodeNotFoundException.class, () -> {
@@ -110,7 +110,7 @@ public class NodeData_Controller_Test {
 	}
 	
 	@Test
-	public void addOrUpdateNode_Test() {
+	void addOrUpdateNode_Test() {
 		LocalDateTime dateTime = LocalDateTime.of(2024, 5, 24, 10, 22, 22, 412000000);
 		NodeData node1 = new NodeData(1,100,20.3,180,0.02, dateTime);
 		when(nodeRepo.save(node1)).thenReturn(node1);
@@ -139,7 +139,7 @@ public class NodeData_Controller_Test {
 	}
 	
 	@Test
-	public void deleteNode_Test() {
+	void deleteNode_Test() {
 		LocalDateTime dateTime = LocalDateTime.of(2024, 5, 24, 10, 22, 22, 412000000);
 		NodeData node1 = new NodeData(1,100,20.3,180,0.02, dateTime);
 		when(nodeRepo.findById(1L)).thenReturn(Optional.of(node1));
@@ -152,7 +152,7 @@ public class NodeData_Controller_Test {
 	}
 	
 	@Test
-	public void deleteNode_IdNotFound_Test() {
+	void deleteNode_IdNotFound_Test() {
 		when(nodeRepo.findById(999L)).thenReturn(Optional.empty());
 		
 		assertThrows(NodeNotFoundException.class, () ->{
@@ -162,7 +162,7 @@ public class NodeData_Controller_Test {
 	
 	
 	@Test
-	public void getnodeInTimeframe_Test() {
+	void getnodeInTimeframe_Test() {
 		LocalDateTime dateTimeLow = LocalDateTime.of(2024, 5, 25, 10, 22, 22, 412000000);
 		LocalDateTime dateTimeHigh = LocalDateTime.of(2024, 5, 27, 10, 22, 22, 412000000);
 		NodeData node1 = new NodeData(1,100,20.3,180,0.02, dateTimeLow);
@@ -255,7 +255,7 @@ public class NodeData_Controller_Test {
     }
 	
 	@Test
-	public void getNodeByThroughputRange_Test() {
+	void getNodeByThroughputRange_Test() {
 		List<NodeData> nodes = createNodeIterable();
 		List<NodeData> inRange = nodes.subList(2, nodes.size());
 		when(nodeRepo.findByThroughputBetween(0.02, 0.03)).thenReturn(inRange);
@@ -427,12 +427,11 @@ public class NodeData_Controller_Test {
     
     @Test
     void getTopTenNodes_Latency_WithData_Test() {
-    	List<NodeData> mockData = new ArrayList<>();
-        mockData = createNodeIterable();
+    	List<NodeData> mockData = createNodeIterable();
         
         when(nodeRepo.findTop10Nodes_Latency()).thenReturn(mockData);
         
-        ResponseEntity<List<NodeData>> responseEntity = nc.getTopTenNodes_Latency();
+        ResponseEntity<List<NodeData>> responseEntity = nc.getTopTenNodesLatency();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(mockData, responseEntity.getBody());
     }
@@ -441,7 +440,7 @@ public class NodeData_Controller_Test {
     void getTopTenNodes_Latency_EmptyData_Test() {
         when(nodeRepo.findAllLatencyErrorRateThroughput()).thenReturn(new ArrayList<>());
 
-        ResponseEntity<List<NodeData>> responseEntity = nc.getTopTenNodes_Latency();
+        ResponseEntity<List<NodeData>> responseEntity = nc.getTopTenNodesLatency();
 
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
         assertTrue(responseEntity.getBody().isEmpty());
@@ -582,7 +581,7 @@ public class NodeData_Controller_Test {
         assertNull(responseEntity.getBody());
     }
     
-	public List<NodeData> createNodeIterable(){
+	List<NodeData> createNodeIterable(){
 		LocalDateTime dateTime = LocalDateTime.of(2024, 5, 24, 10, 22, 22, 412000000);
 		NodeData nd1 = new NodeData(1,100,20.3,180,0.018, dateTime);
 		NodeData nd2 = new NodeData(2,200,18.5,210,0.033, dateTime);
