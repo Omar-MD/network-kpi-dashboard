@@ -45,24 +45,6 @@ public class NodeControllerTest {
                 .andExpect(jsonPath("$.id", is(nodeId.intValue())));
     }
 
-    // @Test
-    // public void testAddOrUpdateNode() throws Exception {
-    // NodeData newNode = new NodeData();
-    // newNode.setNodeId(22);
-    // newNode.setLatency(22.75);
-    // newNode.setErrorRate(0.67);
-    // newNode.setThroughput(3.93);
-    //
-    // mockMvc.perform(post("/kpi/add")
-    // .contentType(MediaType.APPLICATION_JSON)
-    // .content(objectMapper.writeValueAsString(newNode)))
-    // .andExpect(status().isOk())
-    // .andExpect(jsonPath("$.nodeId", is(newNode.getNodeId())))
-    // .andExpect(jsonPath("$.latency", is(newNode.getLatency())))
-    // .andExpect(jsonPath("$.errorRate", is(newNode.getErrorRate())))
-    // .andExpect(jsonPath("$.throughput", is(newNode.getThroughput())));
-    // }
-
     @Test
     public void testDeleteNode() throws Exception {
         Long nodeId = 5L; // Modify according to your test data
@@ -88,16 +70,6 @@ public class NodeControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(0))));
     }
-
-    // @Test
-    // public void testGetNodeInTimeframe() throws Exception {
-    // mockMvc.perform(get("/kpi/time_range")
-    // .param("start", "2024-05-28 12:36:44")
-    // .param("end", "2024-05-28 12:39:20"))
-    // .andExpect(status().isOk())
-    // .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-    // .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(0))));
-    // }
 
     @Test
     public void testGetNodesByLatencyRange() throws Exception {
@@ -176,14 +148,6 @@ public class NodeControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(0))));
     }
-
-    // @Test
-    // public void testGetTopTenNodes_Latency() throws Exception {
-    // mockMvc.perform(get("/kpi/top_ten_latency"))
-    // .andExpect(status().isOk())
-    // .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-    // .andExpect(jsonPath("$", hasSize(lessThanOrEqualTo(10))));
-    // }
 
     @Test
     public void testGetAvgLatencyPerNetwork() throws Exception {
