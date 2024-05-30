@@ -67,6 +67,10 @@
 						<goals>
 							<goal>build</goal>
 						</goals>
+						<configuration>
+							<repository>${docker.image.prefix}/${project.artifactId}</repository>
+							<tag>latest</tag>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
