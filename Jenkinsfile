@@ -33,7 +33,8 @@ pipeline {
         withSonarQubeEnv('SonarQube') {
           sh "${SCANNER_HOME}/bin/sonar-scanner \
               -Dsonar.projectKey=network-kpi-dashboard \
-              -Dsonar.sources=. \
+              -Dsonar.sources=kpi-consumer/src/main/java,kpi-producer/src/main/java,kpi-dashboard/src/main/java \
+              -Dsonar.tests=kpi-consumer/src/test/java,kpi-producer/src/test/java,kpi-dashboard/src/test/java \
               -Dsonar.exclusions=**/*.js,**/*.html,**/*.css \
               -Dsonar.host.url=${SONARQUBE_URL} \
               -Dsonar.token=${SONARQUBE_TOKEN} \
