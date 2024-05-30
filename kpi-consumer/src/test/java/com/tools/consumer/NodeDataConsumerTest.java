@@ -30,9 +30,9 @@ class NodeDataConsumerTest {
         String topic = "node-kpi-data";
         long timestamp = System.currentTimeMillis();
         NodeData nodeData = new NodeData(/* provide appropriate constructor arguments */);
-        ConsumerRecord<String, NodeData> record = new ConsumerRecord<>(topic, 0, 0, key, nodeData);
+        ConsumerRecord<String, NodeData> consumerRecord = new ConsumerRecord<>(topic, 0, 0, key, nodeData);
 
-        nodeDataConsumer.consumer(key, topic, timestamp, record);
+        nodeDataConsumer.consumer(key, topic, timestamp, consumerRecord);
 
         verify(nodeDataRepo, times(1)).save(nodeData);
     }

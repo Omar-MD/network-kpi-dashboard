@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.tools.dashboard.dto.NodeData;
 
-public class NodeData_DTO_Test {
+class NodeDataDtoTest {
 	NodeData nd;
 	
 	@BeforeEach

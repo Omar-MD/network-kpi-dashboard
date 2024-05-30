@@ -21,12 +21,12 @@ public class NodeDataConsumer {
             @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,
             @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
             @Header(KafkaHeaders.RECEIVED_TIMESTAMP) long timestamp,
-            ConsumerRecord<String, NodeData> record) {
+            ConsumerRecord<String, NodeData> consumerRecord) {
 
         // Save the NodeData to the database
-        nodeDataRepo.save(record.value());
+        nodeDataRepo.save(consumerRecord.value());
 
         // Log msg
-        log.info("Consumed msg: topic={}, key={}, value={}", topic, key, record.value());
+        log.info("Consumed msg: topic={}, key={}, value={}", topic, key, consumerRecord.value());
     }
 }

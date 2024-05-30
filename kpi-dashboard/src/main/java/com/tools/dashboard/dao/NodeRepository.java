@@ -30,43 +30,25 @@ public interface NodeRepository extends JpaRepository<NodeData, Long>{
             "LIMIT 1", nativeQuery = true)
     List<Object[]> findNodeWithHighestMetrics();
 
-
-    //AVerage LAtency - time series - moving average
-    //Average Error Rate - time series - moving average
-    //Average Throughput - time series - moving average
-    //Node with highest latency
-    //node with highest error rate
-    //node with lowest throughput
-
-    //Latency over time - select latency from table
     @Query("SELECT nd.latency, nd.timestamp FROM NodeData nd")
     List<Object[]> findLatencyTimestamps();
-    //error rate over time - select error_rate from table
     @Query("SELECT nd.errorRate, nd.timestamp FROM NodeData nd")
     List<Object[]> findErrorRateTimestamps();
-    //throughput over time - select throughput from table
     @Query("SELECT nd.throughput, nd.timestamp FROM NodeData nd")
     List<Object[]> findThroughputTimestamps();
-    //correlation matrix - latency, error rate, throughput - heatmap?
     @Query("SELECT nd.latency, nd.errorRate, nd.throughput FROM NodeData nd")
     List<Object[]> findAllLatencyErrorRateThroughput();
 
-    //error rate vs throughput - scatter - select both
     @Query("SELECT nd.errorRate, nd.throughput FROM NodeData nd")
     List<Object[]> findErrorVsThroughput();
-    //latency vs throughput - scatter - select both
     @Query("SELECT nd.latency, nd.throughput FROM NodeData nd")
     List<Object[]> findLatencyVsThroughput();
-    //top n nodes by attributes - bar? - all three
     @Query("SELECT nd FROM NodeData nd ORDER BY nd.latency DESC")
     List<NodeData> findTop10Nodes_Latency();
-    //average latency per network
     @Query("SELECT nd.networkId, avg(nd.latency) from NodeData nd GROUP BY nd.networkId")
     List<Object[]> findAvgLatencyPerNetwork();
-    //avg error rate per
     @Query("SELECT nd.networkId, avg(nd.errorRate) from NodeData nd GROUP BY nd.networkId")
     List<Object[]> findAvgErrorPerNetwork();
-    //avg througjput per
     @Query("SELECT nd.networkId, avg(nd.throughput) from NodeData nd GROUP BY nd.networkId")
     List<Object[]> findAvgThroughputPerNetwork();
 
@@ -78,9 +60,6 @@ public interface NodeRepository extends JpaRepository<NodeData, Long>{
 
     @Query(value = "SELECT node_id, MAX(error_rate) AS highest_error_rate FROM node_data GROUP BY node_id ORDER BY highest_error_rate DESC LIMIT 1", nativeQuery = true)
     List<Object[]> findNodeWithHighestErrorRate();
-    //heatmaps
-    //Mean LAtency
-    //Mean Error Rate
-    //Mean Throughput
+
 
 }

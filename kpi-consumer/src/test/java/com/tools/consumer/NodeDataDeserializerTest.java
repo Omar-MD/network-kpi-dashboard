@@ -37,9 +37,9 @@ class NodeDataDeserializerTest {
     void testDeserializeWithMalformedJson() {
         byte[] data = "{invalidJson}".getBytes(StandardCharsets.UTF_8);
 
-        assertThrows(SerializationException.class, () -> {
-            nodeDataDeserializer.deserialize("test-topic", data);
-        });
+        assertThrows(SerializationException.class, () ->
+            nodeDataDeserializer.deserialize("test-topic", data)
+        );
     }
 
     @Test
