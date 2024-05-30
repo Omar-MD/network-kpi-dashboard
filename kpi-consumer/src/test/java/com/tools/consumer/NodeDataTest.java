@@ -17,6 +17,12 @@ public class NodeDataTest {
     }
 
     @Test
+    void testId() {
+    	nodeData.setId(1L);
+    	assertEquals(1L, nodeData.getId());
+    }
+    
+    @Test
     void testNodeId() {
         nodeData.setNodeId(15);
         assertEquals(15, nodeData.getNodeId());
