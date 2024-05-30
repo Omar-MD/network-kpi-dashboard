@@ -42,7 +42,11 @@
 							<goal>build</goal>
 						</goals>
 						<configuration>
-							<repository>omar0md/${project.artifactId}</repository>
+							<repository>${docker.image.prefix}/${project.artifactId}</repository>
+							<tag>latest</tag>
+							<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+							<username>${docker.username}</username>
+							<password>${docker.password}</password>
 						</configuration>
 					</execution>
 				</executions>

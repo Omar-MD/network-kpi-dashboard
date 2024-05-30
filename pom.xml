@@ -20,6 +20,8 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<docker.username>omar0md</docker.username>
+		<docker.password>0mar.Duadu!</docker.password>
 	</properties>
 
 	<modules>
