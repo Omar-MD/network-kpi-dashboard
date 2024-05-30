@@ -54,19 +54,19 @@
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
 				<version>1.4.13</version>
+				<configuration>
+					<repository>${docker.image.prefix}/${project.artifactId}</repository>
+					<tag>latest</tag>
+					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+					<username>${docker.username}</username>
+					<password>${docker.password}</password>
+				</configuration>
 				<executions>
 					<execution>
 						<id>default</id>
 						<goals>
 							<goal>build</goal>
 						</goals>
-						<configuration>
-							<repository>${docker.image.prefix}/${project.artifactId}</repository>
-							<tag>latest</tag>
-							<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
-							<username>${docker.username}</username>
-							<password>${docker.password}</password>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>

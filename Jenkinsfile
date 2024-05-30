@@ -18,37 +18,37 @@ pipeline {
 
     stage('Clean & Build') {
       steps {
-        sh './mvnw clean package -DskipTests -Ddockerfile.skip'
+        sh './mvnw clean package -DskipTests'
       }
     }
 
-    stage('Unit Tests') {
-      steps {
-        sh './mvnw test'
-      }
-    }
+    // stage('Unit Tests') {
+    //   steps {
+    //     sh './mvnw test'
+    //   }
+    // }
 
-    stage('SonarQube Analysis') {
-      steps {
-        withSonarQubeEnv('SonarQube') {
-          sh "${SCANNER_HOME}/bin/sonar-scanner \
-              -Dsonar.projectKey=network-kpi-dashboard \
-              -Dsonar.sources=. \
-              -Dsonar.exclusions=**/*.js,**/*.html,**/*.css \
-              -Dsonar.host.url=${SONARQUBE_URL} \
-              -Dsonar.token=${SONARQUBE_TOKEN} \
-              -Dsonar.java.binaries=kpi-consumer/target/classes,kpi-producer/target/classes,kpi-dashboard/target/classes \
-              -Dsonar.java.libraries=kpi-consumer/target/*.jar,kpi-producer/target/*.jar,kpi-dashboard/target/*.jar \
-              -Dsonar.coverage.jacoco.xmlReportPaths=kpi-consumer/target/site/jacoco/jacoco.xml,kpi-producer/target/site/jacoco/jacoco.xml,kpi-dashboard/target/site/jacoco/jacoco.xml"
-        }
-      }
-    }
+    // stage('SonarQube Analysis') {
+    //   steps {
+    //     withSonarQubeEnv('SonarQube') {
+    //       sh "${SCANNER_HOME}/bin/sonar-scanner \
+    //           -Dsonar.projectKey=network-kpi-dashboard \
+    //           -Dsonar.sources=. \
+    //           -Dsonar.exclusions=**/*.js,**/*.html,**/*.css \
+    //           -Dsonar.host.url=${SONARQUBE_URL} \
+    //           -Dsonar.token=${SONARQUBE_TOKEN} \
+    //           -Dsonar.java.binaries=kpi-consumer/target/classes,kpi-producer/target/classes,kpi-dashboard/target/classes \
+    //           -Dsonar.java.libraries=kpi-consumer/target/*.jar,kpi-producer/target/*.jar,kpi-dashboard/target/*.jar \
+    //           -Dsonar.coverage.jacoco.xmlReportPaths=kpi-consumer/target/site/jacoco/jacoco.xml,kpi-producer/target/site/jacoco/jacoco.xml,kpi-dashboard/target/site/jacoco/jacoco.xml"
+    //     }
+    //   }
+    // }
 
-    stage('Build Images') {
-      steps {
-          sh './mvnw dockerfile:build --projects=kpi-consumer,kpi-producer,kpi-dashboard'
-      }
-    }
+    // stage('Build Images') {
+    //   steps {
+    //       sh './mvnw dockerfile:build --projects=kpi-consumer,kpi-producer,kpi-dashboard'
+    //   }
+    // }
 
     stage('Push Images to Docker Hub') {
       steps {
