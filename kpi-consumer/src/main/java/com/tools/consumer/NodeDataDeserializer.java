@@ -1,5 +1,7 @@
 package com.tools.consumer;
 
+import java.nio.charset.StandardCharsets;
+
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.springframework.stereotype.Component;
@@ -21,7 +23,7 @@ public class NodeDataDeserializer implements Deserializer<NodeData> {
                 return null;
             }
             log.info("Deserializing...");
-            return objectMapper.readValue(new String(data, "UTF-8"), NodeData.class);
+            return objectMapper.readValue(new String(data, StandardCharsets.UTF_8), NodeData.class);
         } catch (Exception e) {
             throw new SerializationException("Error when deserializing byte[] to NodeData");
         }
