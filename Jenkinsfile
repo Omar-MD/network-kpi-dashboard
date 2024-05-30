@@ -22,7 +22,7 @@ pipeline {
       }
     }
 
-    stage('Unit Tests') {
+    stage('Tests') {
       steps {
         sh './mvnw test'
       }
