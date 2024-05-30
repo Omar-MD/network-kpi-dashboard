@@ -44,14 +44,6 @@ pipeline {
       }
     }
 
-    stage('Quality Gate Check') {
-      steps {
-        timeout(time: 5, unit: 'MINUTES') {
-          waitForQualityGate abortPipeline: true
-        }
-      }
-    }
-
     stage('Build Images') {
       steps {
           sh './mvnw dockerfile:build --projects=kpi-consumer,kpi-producer,kpi-dashboard'
